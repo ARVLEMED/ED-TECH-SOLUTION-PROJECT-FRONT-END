@@ -8,6 +8,7 @@ import ExamManagement from './Exammanagement';
 import WelfareManagement from './WelfareManagement';
 import TeacherManagement from './TeacherManagement';
 import StudentManagement from './StudentManagement';
+import ClassManagement from './ClassManagement';
 
 function Dashboard() {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -24,10 +25,11 @@ function Dashboard() {
 
                 {/* Desktop Navigation */}
                 <ul className="nav-links md:flex hidden">
-                    <li><NavLink to="/admin/exams" activeClassName="active">Exams</NavLink></li>
-                    <li><NavLink to="/admin/welfare" activeClassName="active">Welfare Management</NavLink></li>
-                    <li><NavLink to="/admin/teachers" activeClassName="active">Teachers</NavLink></li>
-                    <li><NavLink to="/admin/students" activeClassName="active">Students</NavLink></li>
+                    <li><NavLink to="/admin/exams" className="active">Exams</NavLink></li>
+                    <li><NavLink to="/admin/welfare" className="active">Welfare Management</NavLink></li>
+                    <li><NavLink to="/admin/teachers" className="active">Teachers</NavLink></li>
+                    <li><NavLink to="/admin/students" className="active">Students</NavLink></li>
+                    <li><NavLink to="/admin/classes" className="active">Classes</NavLink></li>
                 </ul>
 
                 {/* Logout Icon */}
@@ -43,6 +45,7 @@ function Dashboard() {
                     <li><NavLink to="/admin/welfare" onClick={() => setMenuOpen(false)}>Welfare Management</NavLink></li>
                     <li><NavLink to="/admin/teachers" onClick={() => setMenuOpen(false)}>Teachers</NavLink></li>
                     <li><NavLink to="/admin/students" onClick={() => setMenuOpen(false)}>Students</NavLink></li>
+                    <li><NavLink to="/admin/classes" onClick={() => setMenuOpen(false)}>Classes</NavLink></li>
                 </ul>
             )}
 
@@ -53,6 +56,7 @@ function Dashboard() {
                     <Route path="welfare" element={<WelfareManagement />} />
                     <Route path="teachers" element={<TeacherManagement />} />
                     <Route path="students" element={<StudentManagement />} />
+                    <Route path="Classes" element={<ClassManagement />} />
                 </Routes>
             </main>
         </div>
