@@ -1,0 +1,101 @@
+/* Container for student list */
+.students-container {
+    padding: 20px;
+    background-color: #f4f4f4;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #FF9500;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* Search bar container */
+.search-container {
+    display: flex;
+    align-items: center;
+    width: 50%;
+    max-width: 400px;
+    border: 2px solid #FF9500;
+    border-radius: 5px;
+    padding: 5px;
+    background: white;
+    margin-bottom: 15px;
+}
+
+.search-bar {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 8px;
+    font-size: 16px;
+}
+
+.search-icon {
+    color: #FF9500;
+    font-size: 18px;
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+.student-list {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 50%;
+    max-width: 600px;
+}
+
+.student-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+    font-weight: bold;
+    color: #093F68;
+}
+
+.student-item:hover {
+    background: #FF9500;
+}
+
+.student-details {
+    margin-top: 20px;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-left: 4px solid #FF9500;
+    width: 50%;
+    max-width: 600px;
+}
+
+.student-name {
+    font-size: 20px;
+    font-weight: bold;
+    color: #093F68;
+    text-align: center;
+}
+
+.admission-number {
+    font-weight: bold;
+    color: #555;
+}
+
+.results-title {
+    font-weight: bold;
+    color: #FF9500;
+    margin-top: 10px;
+}
+
+.result-item {
+    padding: 5px;
+    font-weight: bold;
+    color: #093F68;
+}

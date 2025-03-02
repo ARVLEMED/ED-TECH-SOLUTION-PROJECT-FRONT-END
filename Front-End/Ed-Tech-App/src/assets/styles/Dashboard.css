@@ -1,0 +1,10 @@
+.dashboard-container {
+    background-image: url("/src/assets/backgroundimage.jpeg"); /* Ensure correct path */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+}
+.content-area {
+    padding: 20px;
+}
