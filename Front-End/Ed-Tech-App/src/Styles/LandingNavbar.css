@@ -1,0 +1,36 @@
+/* Navbar Styles */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #093f68; /* Dark blue */
+  padding: 15px 20px;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.logo {
+  height: 50px; /* Adjust as needed */
+}
+
+.nav-links {
+  display: flex;
+  gap: 160px; /* Increased gap for more space between links */
+  align-items: center; /* Center the links vertically */
+  justify-content: center; /* Center the links horizontally */
+  flex: 1; /* Allow the links to take up remaining space */
+}
+
+.nav-link {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 24px; /* Increased font size */
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #ff9500; /* Orange on hover */
+}
