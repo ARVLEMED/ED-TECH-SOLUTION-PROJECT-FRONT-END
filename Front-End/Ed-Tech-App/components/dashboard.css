@@ -1,0 +1,135 @@
+/* Ensure the top navbar is properly aligned */
+/* Apply background image to the entire page */
+body {
+    background: url('../src/admin\ block\ image.webp') no-repeat center center fixed;
+    background-size: cover;
+}
+
+
+.top-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #093F68; /* Updated Navbar Background */
+    color: #FF9500; /* Updated Text Color */
+    padding: 15px 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 100;
+}
+
+/* Menu Icon (Extreme Left, with hover & active effect) */
+.menu-button {
+    background: none;
+    border: none;
+    color: #FF9500; /* Updated Text Color */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background 0.3s ease-in-out;
+}
+
+.menu-button:hover,
+.menu-button.active {
+    background-color: #1E5A89; /* Highlight color */
+}
+
+/* Logout button (Extreme Right, properly spaced) */
+.logout-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background 0.3s ease-in-out;
+    margin-left: auto;
+    margin-right: 15px; /* Pushes it to the extreme right */
+}
+
+.logout-button:hover {
+    background-color: #1E5A89; /* Same hover effect */
+}
+
+/* Admin Portal Title (Centered) */
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #FF9500;
+    text-align: center;
+    flex-grow: 1;
+}
+
+/* Desktop Navigation Links */
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.nav-links li {
+    list-style: none;
+}
+
+.nav-links a {
+    color: #FF9500; /* Updated Text Color */
+    text-decoration: none;
+    font-weight: 600;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background 0.3s ease-in-out;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    background-color: #1E5A89; /* Matching Highlight Color */
+}
+
+/* Mobile Navigation */
+.mobile-nav {
+    display: flex;
+    flex-direction: column;
+    background-color: #093F68; /* Match Navbar Background */
+    padding: 10px 0;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.mobile-nav li {
+    text-align: center;
+    padding: 10px;
+}
+
+.mobile-nav a {
+    color: #FF9500; /* Updated Text Color */
+    text-decoration: none;
+    font-size: 18px;
+}
+
+/* Hide Mobile Menu by Default */
+@media (min-width: 768px) {
+    .mobile-nav {
+        display: none !important;
+    }
+
+    .logo {
+        text-align: center;
+    }
+}
+
+/* Main Content */
+.main-content {
+    margin-top: 80px; /* Prevents content from being hidden behind navbar */
+    padding: 20px;
+}
