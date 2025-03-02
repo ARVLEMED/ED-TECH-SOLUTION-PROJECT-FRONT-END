@@ -3,6 +3,7 @@ import { FaEnvelope, FaPhone, FaMapMarkerAlt } from "react-icons/fa"; // Icons f
 import "../Styles/LandingPage.css"; // Import CSS file
 import logo from "../assets/logo.png";
 import graduation from "../assets/graduation.jpeg";
+
 const LandingPage = () => {
   return (
     <div className="landing-page">

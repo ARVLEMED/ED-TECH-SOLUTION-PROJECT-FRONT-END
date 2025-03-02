@@ -10,7 +10,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #093f68; /* Dark blue */
+  background-color: #093f68;
   padding: 15px 20px;
   position: fixed;
   top: 0;
@@ -34,7 +34,7 @@ body {
   color: #ffffff;
   text-decoration: none;
   font-weight: bold;
-  font-size: 24px; /* Increased font size */
+  font-size: 24px;
   transition: color 0.3s ease;
 }
 
@@ -86,7 +86,7 @@ body {
 }
 
 .contact-icon {
-  color: #ff9500; /* Orange */
+  color: #ff9500;
   font-size: 15px;
 }
 
@@ -103,5 +103,5 @@ body {
   font-size: 18px; /* Increased font size */
   color: #ffffff;
   margin-top: 10px;
-  font-weight: bold; /* Make it bold */
+  font-weight: bold;
 }
