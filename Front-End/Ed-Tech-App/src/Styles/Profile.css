@@ -1,0 +1,142 @@
+/* General Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Student Profile Page Layout */
+.student-profile {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  align-items: center;
+}
+
+/* Header (Navbar) */
+.header {
+  background-color: #093f68;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px; /* Bigger padding */
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  font-size: 24px; /* Bigger text */
+}
+
+.menu-icon,
+.logout-icon {
+  cursor: pointer;
+  font-size: 2rem; /* Bigger icons */
+  transition: transform 0.2s ease-in-out;
+}
+
+.menu-icon:hover,
+.logout-icon:hover {
+  transform: scale(1.2);
+}
+
+/* Profile Container */
+.profile-container {
+  flex: 1;
+  padding: 140px 30px 30px; /* Increased padding */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Profile Card - Enlarged for Better Visibility */
+.profile-card {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  padding: 30px;
+  width: 95%;
+  max-width: 800px; /* Bigger card */
+  transition: transform 0.2s ease-in-out;
+}
+
+.profile-card:hover {
+  transform: translateY(-5px);
+}
+
+.profile-picture {
+  border-radius: 10px; /* Slightly rounded edges instead of a circle */
+  width: 150px; /* Slightly bigger for a more prominent look */
+  height: 180px; /* Rectangular shape */
+  border: 5px solid #093f68; /* Adds a nice border */
+  margin-right: 30px;
+  object-fit: cover; /* Ensures the image fills the space without distortion */
+}
+
+.profile-details {
+  flex-grow: 1;
+  font-size: 22px; /* Larger text */
+  color: #333;
+}
+
+.profile-details p {
+  margin: 10px 0;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+/* Action Buttons */
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.btn {
+  background-color: #093f68;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 15px 35px; /* Bigger buttons */
+  font-size: 22px; /* Larger text */
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.btn:hover {
+  background-color: #ff9500;
+  transform: scale(1.1);
+}
+
+/* Footer */
+.footer {
+  background-color: #093f68;
+  color: #ff9500;
+  text-align: center;
+  padding: 25px 0; /* Bigger padding */
+  font-size: 22px; /* Larger text */
+  width: 100vw; /* Ensures full width */
+  position: fixed;
+  bottom: 0;
+  left: 0; /* Aligns with the left edge */
+  display: flex;
+  justify-content: center; /* Centers content horizontally */
+  align-items: center; /* Centers items vertically */
+}
+
+.email {
+  font-weight: bold;
+}
