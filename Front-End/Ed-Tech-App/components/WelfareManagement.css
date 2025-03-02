@@ -1,0 +1,160 @@
+.welfare-container {
+    background: #DFEAEF;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 900px;
+    margin: auto;
+}
+
+.welfare-title {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    color: #ff9800;
+    margin-bottom: 20px;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: white;
+    padding: 8px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.search-container input {
+    border: none;
+    outline: none;
+    padding: 8px;
+    flex-grow: 1;
+}
+
+.search-btn {
+    background: #ff9800;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.welfare-categories {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.welfare-category {
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.welfare-category:hover {
+    background: #ff9800;
+    color: white;
+}
+
+.welfare-list {
+    list-style: none;
+    padding: 0;
+}
+
+.welfare-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.welfare-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.add-remark-btn {
+    background: red;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.welfare-form {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.welfare-form input,
+.welfare-form textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.welfare-form select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.welfare-form button {
+    background: #ff9800;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.welfare-categories {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.welfare-category {
+    padding: 8px 15px;
+    border: none;
+    background-color: var(--navbar-bg, #2C3E50); /* Uses navbar background */
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.welfare-category:hover {
+    background-color: #34495E; /* Slightly lighter on hover */
+}
+
+.welfare-category.active {
+    background-color: #f97316; /* Orange color for active selection */
+    color: white;
+    font-weight: bold;
+}
+
+.no-reports {
+    font-style: italic;
+    color: #666;
+}
