@@ -1,0 +1,374 @@
+/* Reset and Body Styling */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: var(--background-color);
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
+}
+
+#root, .app {
+    height: 100%;
+    width: 100%;
+}
+
+/* Container */
+.student-management-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 100px 20px 20px; /* Increased padding-top to 100px (adjust based on navbar height, e.g., 80px + 20px buffer) */
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px var(--shadow-color);
+    overflow-x: hidden;
+    position: relative; /* Ensure content stays in place relative to navbar */
+    z-index: 1; /* Below navbar but above other content */
+}
+
+/* Search & Add Student */
+.search-add-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 15px;
+    flex-wrap: wrap;
+    position: sticky; /* Optional: Keep search bar visible while scrolling */
+    top: 20px; /* Position below the container's padding-top */
+    background: white; /* Ensure background is visible if sticky */
+    padding: 10px 0; /* Add padding for better spacing */
+    z-index: 2; /* Above the table but below navbar */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .student-management-container {
+        padding: 80px 15px 15px; /* Reduced padding for mobile, still accounting for navbar */
+        margin: 10px auto;
+    }
+    .search-add-container {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        top: 15px; /* Adjusted for mobile */
+    }
+    .search-input {
+        width: 100%;
+    }
+    .student-table th, .student-table td {
+        font-size: 14px;
+        padding: 8px;
+        white-space: nowrap;
+    }
+    .student-details-container {
+        padding: 10px;
+        max-width: 100%;
+    }
+}
+
+/* Search Input */
+.search-input {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    box-shadow: 0 2px 5px var(--shadow-color);
+}
+
+.wider-search {
+    width: 350px;
+}
+
+.search-icon {
+    color: var(--theme-orange);
+    font-size: 18px;
+    margin-left: -30px;
+    cursor: pointer;
+}
+
+/* Buttons */
+.add-student-btn,
+.save-button,
+.cancel-button,
+.delete-confirm-button {
+    background-color: var(--navbar-bg);
+    color: var(--theme-orange);
+    padding: 12px 20px;
+    font-size: 16px;
+    border: 2px solid var(--theme-orange);
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 5px var(--shadow-color);
+    transition: all 0.3s ease-in-out;
+}
+
+.add-student-btn:hover,
+.save-button:hover,
+.cancel-button:hover,
+.delete-confirm-button:hover {
+    background-color: #003366;
+    color: white;
+    border-color: #003366;
+    box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+/* Student Table Wrapper */
+.student-table-container {
+    width: 100%;
+    overflow-x: auto;
+    max-height: calc(100vh - 200px);
+    position: relative;
+}
+
+/* Student Table */
+.student-table {
+    width: 100%;
+    min-width: 700px;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+.student-table th, .student-table td {
+    padding: 14px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.student-table th {
+    background: var(--navbar-bg);
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    font-weight: bold;
+}
+
+.student-table td {
+    color: #333;
+    font-weight: 500;
+    background: #f9f9f9;
+}
+
+.student-table tr:hover {
+    background: #e0e0e0;
+    color: #333;
+    font-weight: bold;
+    transition: background 0.2s ease-in-out;
+}
+
+/* Action Buttons */
+.edit-button,
+.delete-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 20px;
+    transition: color 0.3s ease;
+}
+
+.edit-button {
+    color: var(--theme-orange);
+}
+
+.edit-button:hover {
+    color: #e68900;
+}
+
+.delete-button {
+    color: red;
+}
+
+.delete-button:hover {
+    color: #cc0000;
+}
+
+/* Student Details, Add Student, and Edit Student Containers (Modal Styles) */
+.student-details-container {
+    width: 90%;
+    max-width: 600px;
+    padding: 25px;
+    border-radius: 12px;
+    background: white;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    position: fixed;
+    top: 90px; /* Below navbar (assumed 80px height + 10px buffer) */
+    left: 50%;
+    transform: translateX(-50%); /* Center horizontally */
+    z-index: 1000;
+    color: #003366;
+    max-height: calc(100vh - 110px); /* Leave space for navbar (80px) and padding */
+    overflow-y: auto; /* Enable vertical scrolling for long content */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+.add-student-container,
+.edit-student-container {
+    width: 100%;
+    max-width: 500px;
+    padding: 25px;
+    border-radius: 12px;
+    background: white;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    color: #003366;
+}
+
+/* Modal Overlay for Add/Edit Student Forms */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+/* Form Inputs */
+.add-student-container label,
+.edit-student-container label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #444baf;
+}
+
+.add-student-container input,
+.add-student-container select,
+.edit-student-container input,
+.edit-student-container select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 16px;
+    box-shadow: 0 2px 5px var(--shadow-color);
+}
+
+.add-student-container input:focus,
+.add-student-container select:focus,
+.edit-student-container input:focus,
+.edit-student-container select:focus {
+    border-color: #444baf;
+    outline: none;
+    box-shadow: 0 0 8px rgba(68, 75, 175, 0.3);
+}
+
+/* Form Actions */
+.edit-actions, .add-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    gap: 10px;
+}
+
+.save-button {
+    background-color: #003366;
+    color: var(--theme-orange);
+    border: 2px solid var(--theme-orange);
+}
+
+.cancel-button {
+    background-color: var(--navbar-bg);
+    color: var(--theme-orange);
+    border: 2px solid var(--theme-orange);
+}
+
+/* Close Button for Details */
+.close-button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #444baf;
+    cursor: pointer;
+    margin-left: auto;
+    transition: color 0.3s ease;
+}
+
+.close-button:hover {
+    color: var(--theme-orange);
+}
+
+/* Loading and Error Messages (optional, if needed) */
+.loading-msg {
+    text-align: center;
+    font-size: 18px;
+    color: #444baf;
+    margin-top: 20px;
+}
+
+.error-msg {
+    text-align: center;
+    font-size: 16px;
+    color: red;
+    margin-bottom: 20px;
+}
+
+.subject-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .subject-selector select {
+    flex-grow: 1;
+    padding: 5px;
+  }
+  
+  .add-subject-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 3px;
+  }
+  
+  .add-subject-btn:hover {
+    background-color: #218838;
+  }
+  
+  .selected-subjects {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .subject-item {
+    display: flex;
+    align-items: center;
+    background-color: #f1f1f1;
+    padding: 5px 10px;
+    border-radius: 15px;
+  }
+  
+  .remove-subject-btn {
+    background: none;
+    border: none;
+    color: #dc3545;
+    cursor: pointer;
+    margin-left: 5px;
+  }
+  
+  .remove-subject-btn:hover {
+    color: #c82333;
+  }

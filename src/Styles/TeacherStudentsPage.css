@@ -1,0 +1,234 @@
+/* General Styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+  
+  }
+  
+  /* Navbar Styles */
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #333;
+    color: white;
+    padding: 10px 20px;
+    z-index: 1000;
+  }
+  
+  /* Students Container */
+  .students-container {
+    max-width: 800px;
+    margin: 80px auto 20px; /* Adjusted margin to account for navbar */
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow-y: auto; /* Add scroll if content overflows */
+  }
+  
+  /* Title */
+  .title {
+    font-size: 24px;
+    color:whitesmoke;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+ /* Search Container */
+.search-container {
+    display: flex;
+    align-items: center;
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    border: 1px solid #ccc; /* Optional: Add border for better visibility */
+  }
+  
+  .search-icon {
+    color: #888;
+    margin-right: 10px;
+    font-size: 18px; /* Adjust icon size if needed */
+  }
+  
+  .search-bar {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    padding: 8px; /* Add padding for better spacing */
+  }
+  
+  .clear-search-btn {
+    background: none;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    padding: 5px;
+    margin-left: 10px; /* Add margin to separate from search bar */
+  }
+  
+  .clear-search-btn:hover {
+    color: #333;
+  }
+  
+  /* Loading and Error States */
+  .loading {
+    text-align: center;
+    color: #888;
+    margin: 20px 0;
+    font-size: 18px;
+  }
+  
+  .error {
+    text-align: center;
+    color: red;
+    margin: 20px 0;
+    font-size: 18px;
+  }
+  
+  /* Student List */
+.student-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 500px; /* Limit height to prevent overflow */
+    overflow-y: auto; /* Add scroll if content overflows */
+  }
+  
+  .student-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    padding: 20px; /* Increased padding */
+    border-radius: 8px;
+    margin-bottom: 15px; /* Increased margin */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    width: 100%; /* Full width of the container */
+  }
+  
+  .student-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  }
+  
+  .student-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1; /* Allow student info to take up available space */
+  }
+  
+  .student-name {
+    font-weight: bold;
+    color: #333;
+    font-size: 18px; /* Increased font size */
+  }
+  
+  .admission-number {
+    color: #888;
+    font-size: 16px; /* Increased font size */
+    margin-top: 5px; /* Added margin for spacing */
+  }
+  
+  .class-name {
+    color: #555;
+    font-size: 16px; /* Increased font size */
+    margin-top: 5px; /* Added margin for spacing */
+  }
+  
+  .view-details-btn {
+    background: #ff9800;
+    color: white;
+    border: none;
+    padding: 10px 20px; /* Increased padding */
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px; /* Increased font size */
+    transition: background 0.2s ease;
+    margin-left: 20px; /* Added margin for spacing */
+  }
+  
+  .view-details-btn:hover {
+    background: #e68900;
+  }
+  
+  /* Student Details Modal */
+  .student-details-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1001; /* Ensure modal is above navbar */
+  }
+  
+  .student-details-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+  }
+  
+  .close-details-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    font-size: 18px;
+  }
+  
+  .close-details-btn:hover {
+    color: #333;
+  }
+  
+  .subjects-title {
+    margin-top: 15px;
+    color: #333;
+  }
+  
+  .subjects-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .subject-item {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+    color: #555;
+  }
+
+  @media (max-width: 768px) {
+    .student-item {
+      flex-direction: column; /* Stack items vertically on small screens */
+      align-items: flex-start;
+      padding: 15px; /* Adjusted padding for smaller screens */
+    }
+  
+    .view-details-btn {
+      margin-left: 0; /* Remove left margin on small screens */
+      margin-top: 10px; /* Add top margin for spacing */
+      width: 100%; /* Full width button on small screens */
+    }
+  
+    .student-name,
+    .admission-number,
+    .class-name {
+      font-size: 16px; /* Adjusted font size for smaller screens */
+    }
+  }

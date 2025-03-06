@@ -1,0 +1,96 @@
+.dashboard-container {
+    background: url('../src/admin\ block\ image.webp') no-repeat center center fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+}
+.content-area {
+    padding: 20px;
+}
+/* TeacherDashboard.css */
+
+/* Top Navbar */
+.top-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background: #093F68;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+.nav-links {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #f97316;
+    font-size: 16px;
+    transition: color 0.2s ease;
+}
+
+.nav-links a.active-link {
+    color: #f97316;
+    font-weight: bold;
+}
+
+.nav-links a:hover {
+    color: #f97316;
+}
+
+/* Mobile Navigation */
+.mobile-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    background: #ffffff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    list-style: none;
+}
+
+.mobile-nav a {
+    text-decoration: none;
+    color: #555;
+    font-size: 16px;
+    transition: color 0.2s ease;
+}
+
+.mobile-nav a:hover {
+    color: #f97316;
+}
+
+/* Menu Button */
+.menu-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* Logout Button */
+.logout-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* Content Area */
+.content-area {
+    padding: 20px;
+}
+
+.dashboard-title {
+    font-size: 28px;
+    color: whitesmoke;
+    text-align: center;
+    margin-bottom: 20px;
+}

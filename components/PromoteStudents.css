@@ -1,0 +1,126 @@
+.promote-students-page {
+    width: 80%;
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .promote-students-page h2 {
+    color: #093F68; /* Dark blue for title */
+    margin-bottom: 20px;
+    font-size: 28px;
+    font-weight: 700;
+  }
+  
+  .form-selector {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .form-selector label {
+    font-size: 16px;
+    color: #093F68; /* Dark blue for label */
+    font-weight: 500;
+  }
+  
+  .form-selector select {
+    padding: 8px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 16px;
+    background: #f9f9f9;
+    color: #333; /* Dark text for readability */
+    transition: border-color 0.3s;
+  }
+  
+  .form-selector select:hover,
+  .form-selector select:focus {
+    border-color: #093F68;
+    outline: none;
+  }
+  
+  .student-list h3 {
+    color: #093F68; /* Dark blue for section title */
+    margin-bottom: 15px;
+    font-size: 20px;
+  }
+  
+  .student-list table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff; /* White background for table */
+  }
+  
+  .student-list th,
+  .student-list td {
+    border: 1px solid #e0e0e0;
+    padding: 10px;
+    text-align: left;
+    color: #333; /* Dark gray text for readability */
+  }
+  
+  .student-list th {
+    background: #093F68; /* Dark blue header */
+    color: #ffffff; /* White text for contrast */
+    font-weight: 600;
+  }
+  
+  .student-list td {
+    background: #ffffff; /* White background for rows */
+  }
+  
+  .student-list tr:nth-child(even) td {
+    background: #f9f9f9; /* Light gray for even rows */
+  }
+  
+  .student-list tr:hover td {
+    background: #e6eef5; /* Light blue hover effect */
+  }
+  
+  .student-list input[type="checkbox"] {
+    accent-color: #FF9500; /* Orange checkbox */
+  }
+  
+  button {
+    background: #FF9500; /* Orange button */
+    color: #ffffff; /* White text */
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+    transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+  }
+  
+  button:hover:not(:disabled) {
+    background: #e08500; /* Darker orange on hover */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(255, 149, 0, 0.3);
+  }
+  
+  button:disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+  }
+  
+  .loading-message,
+  .error-message {
+    font-size: 16px;
+    margin: 20px 0;
+  }
+  
+  .loading-message {
+    color: #093F68; /* Dark blue for loading */
+  }
+  
+  .error-message {
+    color: #ff4d4d; /* Red for errors */
+  }

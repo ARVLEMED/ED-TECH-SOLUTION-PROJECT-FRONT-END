@@ -1,0 +1,116 @@
+/* AcademicWelfarePage.css */
+
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa; /* Light gray background for the page */
+    color: #333; /* Dark gray text for readability */
+    line-height: 1.6;
+  }
+  
+  /* Container for the entire page */
+  .academic-welfare-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+  }
+  
+  /* Loading message styling */
+  .loading-message {
+    text-align: center;
+    padding: 50px;
+    color: #2c3e50; /* Deep blue for loading text */
+    font-size: 1.2em;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Error message styling */
+  .error-message {
+    text-align: center;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: #dc3545; /* Red for errors */
+  }
+  
+  .error-message p {
+    font-size: 1.1em;
+    margin-bottom: 15px;
+  }
+  
+  .error-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .retry-button, .back-button {
+    padding: 10px 20px;
+    background-color: #3498db; /* Light blue for buttons */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+  }
+  
+  .retry-button:hover, .back-button:hover {
+    background-color: #2980b9; /* Darker blue on hover */
+  }
+  
+  /* Welfare Page Container (if needed for specific styling) */
+  .welfare-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+  }
+  
+  .welfare-container h1 {
+    color: #2c3e50; /* Deep blue for title */
+    font-size: 1.5em;
+    margin-bottom: 15px;
+  }
+  
+  .welfare-container p {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .academic-welfare-page {
+      padding: 10px;
+    }
+  
+    .loading-message, .error-message {
+      padding: 20px;
+    }
+  
+    .welfare-container {
+      padding: 15px;
+    }
+  
+    .welfare-container h1 {
+      font-size: 1.3em;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .retry-button, .back-button {
+      padding: 8px 16px;
+      font-size: 0.9em;
+    }
+  }

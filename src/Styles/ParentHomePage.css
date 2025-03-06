@@ -1,0 +1,262 @@
+/* Reset default margins and paddings */
+body,
+html {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4; /* Light background */
+}
+
+/* Navbar Styling */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #093f68; /* Theme primary color */
+  padding: 1rem 2rem;
+  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+}
+
+.navbar .logo {
+  display: flex;
+  align-items: center;
+}
+
+.navbar .logo img {
+  width: 50px; /* Fixed width */
+  height: 50px; /* Fixed height */
+  border-radius: 50%; /* Circular logo */
+  object-fit: cover; /* Ensure image fits without distortion */
+  margin-right: 12px;
+}
+
+.navbar .logo span {
+  color: #ff9500; /* Theme accent color */
+  font-size: 22px;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+/* Logout Button */
+.logout-button {
+  background-color: transparent;
+  border: none;
+  color: #ff9500; /* Theme accent color */
+  cursor: pointer;
+  font-size: 24px;
+  transition: color 0.3s ease-in-out, transform 0.2s;
+  padding: 8px;
+}
+
+.logout-button:hover {
+  color: #e08500; /* Darker orange on hover */
+  transform: scale(1.1); /* Slight scale for interactivity */
+}
+
+/* Main Content */
+.content {
+  padding-top: 100px; /* Increased to clear navbar */
+  max-width: 1200px; /* Wider max-width for better layout */
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+
+/* Search Section */
+.search-filter-container {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 1.5rem;
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  margin-bottom: 40px;
+  margin-top: 35px;
+  position: relative; /* Ensure it stays below navbar */
+  z-index: 10; /* Below navbar but above content */
+}
+
+/* Search Input */
+.search-filter-container input {
+  flex-grow: 1;
+  padding: 12px 15px;
+  font-size: 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  min-width: 250px;
+  transition: border-color 0.3s;
+  background: #f9f9f9; /* Light background for input */
+  color: #333;
+}
+
+.search-filter-container input:focus {
+  border-color: #093f68; /* Theme primary on focus */
+  outline: none;
+  box-shadow: 0 0 5px rgba(9, 63, 104, 0.3);
+}
+
+/* Student List */
+.student-list-container {
+  padding: 20px 0;
+}
+
+.student-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+/* Student Card */
+.student-card {
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.2s ease-in-out, box-shadow 0.3s;
+  max-width: 800px;
+  width: 50%;
+  margin: 0 auto;
+}
+
+.student-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Student Image */
+.student-card img {
+  width: 100px; /* Fixed size for consistency */
+  height: 100px;
+  object-fit: cover; /* Ensures image fits without stretching */
+  border-radius: 50%; /* Fully circular */
+  margin-bottom: 20px;
+  border: 2px solid #093f68; /* Theme border */
+}
+
+/* Student Details */
+.student-details h3 {
+  margin: 0;
+  font-size: 22px;
+  color: #093f68; /* Theme primary color */
+  font-weight: 600;
+}
+
+.student-details p {
+  font-size: 16px;
+  color: #555;
+  margin: 8px 0;
+}
+
+/* View Button */
+.view-button {
+  background-color: #ff9500; /* Theme accent color */
+  color: #ffffff; /* White text for contrast */
+  padding: 12px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out, transform 0.2s;
+  margin-top: 15px;
+}
+
+.view-button:hover {
+  background-color: #e08500; /* Darker orange on hover */
+  transform: translateY(-2px);
+}
+
+/* Loading Message */
+.loading-message {
+  text-align: center;
+  font-size: 18px;
+  color: #093f68; /* Theme primary */
+  margin-top: 30px;
+}
+
+/* Error Message */
+.error-message {
+  text-align: center;
+  font-size: 18px;
+  color: #ff4d4d; /* Red for errors */
+  margin-top: 30px;
+}
+
+.error-message p {
+  margin-bottom: 15px;
+}
+
+.retry-button {
+  background-color: #093f68; /* Theme primary */
+  color: #ffffff; /* White text */
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.retry-button:hover {
+  background-color: #082c4a; /* Darker blue */
+}
+
+/* No Students Message */
+.no-students-message {
+  text-align: center;
+  font-size: 18px;
+  color: #555;
+  margin-top: 30px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .content {
+    padding-top: 80px; /* Adjust for smaller screens */
+    max-width: 95%;
+  }
+
+  .navbar {
+    padding: 1rem;
+  }
+
+  .navbar .logo img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .navbar .logo span {
+    font-size: 18px;
+  }
+
+  .search-filter-container {
+    flex-direction: column;
+    gap: 15px;
+    padding: 1rem;
+  }
+
+  .student-list {
+    grid-template-columns: 1fr;
+  }
+
+  .student-card {
+    padding: 20px;
+  }
+
+  .student-card img {
+    width: 80px;
+    height: 80px;
+  }
+
+  .view-button {
+    width: 100%;
+    padding: 10px;
+  }
+}

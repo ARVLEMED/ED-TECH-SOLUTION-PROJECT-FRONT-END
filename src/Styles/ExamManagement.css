@@ -1,0 +1,177 @@
+.exam-container {
+    background: #DFEAEF;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 2000px; /* Adjusted width */
+    margin: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added shadow for depth */
+}
+
+.exam-title {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    color: #ff9800;
+    margin-bottom: 20px; /* Added margin for spacing */
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: white;
+    padding: 8px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.search-container input {
+    border: none;
+    outline: none;
+    padding: 8px;
+    flex-grow: 1;
+    font-size: 16px; /* Increased font size for better readability */
+}
+
+.search-btn {
+    background: #ff9800;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px; /* Increased font size */
+}
+
+.add-exam-btn {
+    background: red;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    width: 100%; /* Full width for better alignment */
+}
+
+.exam-list {
+    list-style: none;
+    padding: 0;
+    color: black;
+}
+
+.exam-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    padding: 15px; /* Increased padding */
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease; 
+    max-width: 1000px;/* Added transition for hover effect */
+}
+
+.exam-item:hover {
+    transform: translateY(-2px); /* Slight lift on hover */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+}
+
+.exam-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.edit-btn,
+.delete-btn {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 18px;
+    transition: color 0.2s ease; /* Smooth color transition */
+}
+
+.edit-btn {
+    color: #ff9800;
+}
+
+.edit-btn:hover {
+    color: #e68900; /* Darker shade on hover */
+}
+
+.delete-btn {
+    color: red;
+}
+
+.delete-btn:hover {
+    color: #cc0000; /* Darker shade on hover */
+}
+
+.exam-form {
+    background: white;
+    padding: 20px; /* Increased padding */
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.exam-form input {
+    width: 100%;
+    padding: 10px; /* Increased padding */
+    margin-bottom: 15px; /* Increased margin */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px; /* Increased font size */
+}
+
+.exam-form button {
+    background: #ff9800;
+    color: white;
+    border: none;
+    padding: 10px 15px; /* Increased padding */
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px; /* Increased font size */
+    width: 100%; /* Full width for better alignment */
+    transition: background 0.2s ease; /* Smooth background transition */
+}
+
+.exam-form button:hover {
+    background: #e68900; /* Darker shade on hover */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .exam-container {
+        padding: 15px;
+        max-width: 90%; /* Adjusted width for smaller screens */
+    }
+
+    .exam-title {
+        font-size: 20px; /* Smaller font size for smaller screens */
+    }
+
+    .search-container input {
+        font-size: 14px; /* Smaller font size for smaller screens */
+    }
+
+    .search-btn,
+    .add-exam-btn,
+    .exam-form button {
+        font-size: 14px; /* Smaller font size for smaller screens */
+    }
+
+    .exam-item {
+        padding: 10px; /* Reduced padding for smaller screens */
+    }
+
+    .exam-form input {
+        padding: 8px; /* Reduced padding for smaller screens */
+        font-size: 14px; /* Smaller font size for smaller screens */
+    }
+}

@@ -1,0 +1,401 @@
+/* Theme Colors */
+:root {
+    --navbar-bg: #004080; /* Navbar background */
+    --theme-orange: #FF9800; /* Theme orange */
+    --background-color: #DFEAEF; /* Background color */
+    --shadow-color: rgba(0, 0, 0, 0.1); /* Reusable shadow color */
+}
+
+/* Reset and Body Styling */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: var(--background-color);
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
+}
+
+#root, .app {
+    height: 100%;
+    width: 100%;
+}
+
+/* Container */
+.teacher-management-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 100px 20px 20px; /* Increased padding-top to account for navbar (adjust based on navbar height, e.g., 80px + 20px buffer) */
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px var(--shadow-color);
+    overflow-x: hidden;
+    position: relative;
+    z-index: 1;
+}
+
+/* Search & Add Teacher */
+.search-add-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 15px;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 20px; /* Position below the container's padding-top */
+    background: white;
+    padding: 10px 0;
+    z-index: 2;
+    box-shadow: 0 2px 5px var(--shadow-color); /* Subtle shadow for elevation */
+}
+
+.relative {
+    position: relative;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+}
+
+/* Search Input */
+.search-input {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    box-shadow: 0 2px 5px var(--shadow-color);
+}
+
+.wider-search {
+    width: 350px;
+}
+
+.search-icon {
+    color: var(--theme-orange);
+    font-size: 18px;
+    margin-left: -30px;
+    cursor: pointer;
+}
+
+/* Buttons */
+.add-teacher-btn,
+.save-button,
+.cancel-button {
+    background-color: var(--navbar-bg);
+    color: var(--theme-orange);
+    padding: 12px 20px;
+    font-size: 16px;
+    border: 2px solid var(--theme-orange);
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 5px var(--shadow-color);
+    transition: all 0.3s ease-in-out;
+}
+
+.add-teacher-btn:hover,
+.save-button:hover,
+.cancel-button:hover {
+    background-color: #003366;
+    color: white;
+    border-color: #003366;
+    box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+/* Teacher List */
+.teacher-list {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+    max-width: 1000px;
+    margin: auto;
+    max-height: 60vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin-bottom: 0;
+}
+
+.teacher-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px var(--shadow-color);
+    width: 100%;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    max-width: 100%;
+}
+
+.teacher-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px var(--shadow-color);
+}
+
+.teacher-item strong {
+    font-size: 20px;
+    color: #444baf;
+}
+
+.teacher-item small {
+    font-size: 16px;
+    color: #666;
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.edit-button,
+.delete-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 20px;
+    transition: color 0.3s ease;
+}
+
+.edit-button {
+    color: var(--theme-orange);
+}
+
+.edit-button:hover {
+    color: #e68900;
+}
+
+.delete-button {
+    color: red;
+}
+
+.delete-button:hover {
+    color: #cc0000;
+}
+
+/* Teacher Details, Add Teacher, and Edit Teacher Containers (Modal Styles) */
+.teacher-details-container,
+.add-teacher-container,
+.edit-teacher-container {
+    width: 100%;
+    max-width: 500px;
+    padding: 25px;
+    border-radius: 12px;
+    background: white;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    color: #003366;
+}
+
+/* Modal Overlay for Details, Add, and Edit Teacher Forms */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+/* Form Inputs */
+.add-teacher-container label,
+.edit-teacher-container label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #444baf;
+}
+
+.add-teacher-container input,
+.add-teacher-container select,
+.edit-teacher-container input,
+.edit-teacher-container select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 16px;
+    box-shadow: 0 2px 5px var(--shadow-color);
+}
+
+.add-teacher-container input:focus,
+.add-teacher-container select:focus,
+.edit-teacher-container input:focus,
+.edit-teacher-container select:focus {
+    border-color: #444baf;
+    outline: none;
+    box-shadow: 0 0 8px rgba(68, 75, 175, 0.3);
+}
+
+/* Form Actions */
+.edit-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    gap: 10px;
+}
+
+.save-button {
+    background-color: #003366;
+    color: var(--theme-orange);
+    border: 2px solid var(--theme-orange);
+}
+
+.cancel-button {
+    background-color: var(--navbar-bg);
+    color: var(--theme-orange);
+    border: 2px solid var(--theme-orange);
+}
+
+/* Close Button for Details */
+.close-button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #444baf;
+    cursor: pointer;
+    margin-left: auto;
+    transition: color 0.3s ease;
+}
+
+.close-button:hover {
+    color: var(--theme-orange);
+}
+
+/* Subject Input and Tags */
+.subject-input-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.add-subject-button {
+    background-color: var(--navbar-bg);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 50%;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px var(--shadow-color);
+    transition: background 0.3s ease;
+}
+
+.add-subject-button:hover {
+    background-color: #003366;
+    box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+.selected-subjects {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.subject-tag {
+    background-color: var(--navbar-bg);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+    box-shadow: 0 1px 3px var(--shadow-color);
+}
+
+.remove-subject-button {
+    background: none;
+    border: none;
+    color: var(--theme-orange);
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.remove-subject-button:hover {
+    color: #e68900;
+}
+
+/* Loading and Error Messages */
+.loading-msg {
+    text-align: center;
+    font-size: 18px;
+    color: #444baf;
+    margin-top: 20px;
+}
+
+.error-msg {
+    text-align: center;
+    font-size: 16px;
+    color: red;
+    margin-bottom: 20px;
+}
+
+.subject-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .subject-selector select {
+    flex-grow: 1;
+    padding: 5px;
+  }
+  
+  .add-subject-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 3px;
+  }
+  
+  .add-subject-btn:hover {
+    background-color: #218838;
+  }
+  
+  .selected-subjects {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .subject-item {
+    display: flex;
+    align-items: center;
+    background-color: #f1f1f1;
+    padding: 5px 10px;
+    border-radius: 15px;
+  }
+  
+  .remove-subject-btn {
+    background: none;
+    border: none;
+    color: #dc3545;
+    cursor: pointer;
+    margin-left: 5px;
+  }
+  
+  .remove-subject-btn:hover {
+    color: #c82333;
+  }

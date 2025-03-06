@@ -1,0 +1,151 @@
+/* Ensure background color covers the entire screen */
+body,
+html {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #093f68; /* Page background color */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* General Styles */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: transparent; /* Remove container background */
+  padding-top: 20px;
+}
+
+.auth-box {
+  background-color: #ffffff; /* White background for the card */
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+}
+
+.logo-container {
+  margin-bottom: 20px;
+}
+
+.school-logo {
+  height: 80px; /* Adjust as needed */
+}
+
+/* Paragraph styles */
+.auth-box p {
+  color: #333333; /* Dark text for better contrast on white background */
+  margin-bottom: 20px;
+  font-size: 16px; /* Adjust font size as needed */
+}
+
+.bottom {
+  margin-top: 20px;
+}
+
+/* Input fields */
+.auth-box input,
+.auth-box select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  appearance: none; /* Remove default arrow */
+  background-color: #ffffff; /* White background for inputs */
+}
+
+.auth-box input:focus,
+.auth-box select:focus {
+  border-color: #093f68;
+  outline: none;
+  box-shadow: 0 0 5px rgba(9, 63, 104, 0.5);
+}
+
+.auth-box input::placeholder {
+  color: #999;
+  font-size: 14px;
+}
+
+/* Button styles */
+.auth-box button {
+  width: 100%;
+  padding: 12px;
+  background-color: #093f68; /* Dark blue */
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.auth-box button:hover {
+  background-color: #082c4a; /* Slightly darker blue */
+}
+
+.auth-box button:focus {
+  background-color: #082c4a;
+  outline: none;
+  box-shadow: 0 0 5px rgba(9, 63, 104, 0.5);
+}
+
+.auth-box button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Register link paragraph */
+.register-link {
+  margin-top: 20px;
+}
+
+.link-text {
+  color: #ff9500; /* Orange */
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.link-text:hover {
+  color: #e67e22;
+  text-decoration: underline;
+}
+
+/* Error message styling */
+.error-message {
+  color: #ff0000;
+  font-size: 14px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .auth-box {
+    padding: 20px;
+    margin: 10px;
+  }
+
+  .school-logo {
+    height: 60px;
+  }
+
+  .auth-box p {
+    font-size: 14px;
+  }
+
+  .auth-box input,
+  .auth-box button,
+  .auth-box select {
+    font-size: 14px;
+  }
+}
