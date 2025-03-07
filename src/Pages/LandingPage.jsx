@@ -1,31 +1,27 @@
 import React from "react";
-import { FaEnvelope, FaPhone, FaMapMarkerAlt } from "react-icons/fa"; // Icons for contact details
-import "../Styles/LandingPage.css"; // Import CSS file
+import { Link } from "react-router-dom";
+import { FaEnvelope, FaPhone, FaMapMarkerAlt } from "react-icons/fa";
+import "../Styles/LandingPage.css";
 import logo from "../assets/logo.png";
 import graduation from "../assets/graduation.jpeg";
 
 const LandingPage = () => {
   return (
     <div className="landing-page">
-      {/* Header */}
       <header className="navbar">
         <img src={logo} alt="School Logo" className="logo" />
         <div className="nav-links">
-          <a href="/login" className="nav-link">
+          <Link to="/login" className="nav-link">
             Login
-          </a>
-          <a href="/register" className="nav-link">
+          </Link>
+          <Link to="/register" className="nav-link">
             Sign Up
-          </a>
+          </Link>
         </div>
       </header>
-
-      {/* Main Section - Hero Image */}
       <main className="hero-section">
         <img src={graduation} alt="Graduation" className="hero-image" />
       </main>
-
-      {/* Footer */}
       <footer className="footer">
         <div className="contact-info">
           <div className="contact-item">
