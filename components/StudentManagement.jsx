@@ -44,7 +44,7 @@ const StudentManagement = () => {
     setIsLoading(true);
     try {
       const token = getToken();
-      const response = await fetch("http://127.0.0.1:5000/api/students", {
+      const response = await fetch("https://ed-tech-solution-project-back-end.onrender.com/api/students", {
         headers: {
           "Authorization": `Bearer ${token}`, // Add token
           "Content-Type": "application/json",
@@ -79,7 +79,7 @@ const StudentManagement = () => {
   const fetchClasses = async () => {
     try {
       const token = getToken();
-      const response = await fetch("http://127.0.0.1:5000/api/classes", {
+      const response = await fetch("https://ed-tech-solution-project-back-end.onrender.com/api/classes", {
         headers: { "Authorization": `Bearer ${token}` },
       });
       if (!response.ok) {
@@ -100,7 +100,7 @@ const StudentManagement = () => {
   const fetchParents = async () => {
     try {
       const token = getToken();
-      const response = await fetch("http://127.0.0.1:5000/api/users/by-role?role=parent", {
+      const response = await fetch("https://ed-tech-solution-project-back-end.onrender.com/api/users/by-role?role=parent", {
         headers: { "Authorization": `Bearer ${token}` },
       });
       if (!response.ok) {
@@ -120,7 +120,7 @@ const StudentManagement = () => {
   const fetchSubjects = async () => {
     try {
       const token = getToken();
-      const response = await fetch("http://127.0.0.1:5000/api/subjects", {
+      const response = await fetch("https://ed-tech-solution-project-back-end.onrender.com/api/subjects", {
         headers: { "Authorization": `Bearer ${token}` },
       });
       if (!response.ok) {
@@ -139,7 +139,7 @@ const StudentManagement = () => {
   const fetchStudentSubjects = async (studentId) => {
     try {
       const token = getToken();
-      const response = await fetch(`http://127.0.0.1:5000/api/students/${studentId}/subjects`, {
+      const response = await fetch(`https://ed-tech-solution-project-back-end.onrender.com/api/students/${studentId}/subjects`, {
         headers: { "Authorization": `Bearer ${token}` },
       });
       if (!response.ok) {
@@ -158,7 +158,7 @@ const StudentManagement = () => {
   const fetchWelfareReports = async (studentId) => {
     try {
       const token = getToken();
-      const response = await fetch(`http://127.0.0.1:5000/api/students/${studentId}/welfare_reports`, {
+      const response = await fetch(`https://ed-tech-solution-project-back-end.onrender.com/api/students/${studentId}/welfare_reports`, {
         headers: { "Authorization": `Bearer ${token}` },
       });
       if (!response.ok) {
@@ -178,7 +178,7 @@ const StudentManagement = () => {
     setIsLoading(true);
     try {
       const token = getToken();
-      const response = await fetch(`http://127.0.0.1:5000/api/students/${studentId}/results`, {
+      const response = await fetch(`https://ed-tech-solution-project-back-end.onrender.com/${studentId}/results`, {
         headers: { "Authorization": `Bearer ${token}` },
       });
       if (!response.ok) {
@@ -273,7 +273,7 @@ const StudentManagement = () => {
         return;
       }
 
-      const response = await fetch(`http://127.0.0.1:5000/api/students/${editingStudent.id}`, {
+      const response = await fetch(`https://ed-tech-solution-project-back-end.onrender.com/api/students/${editingStudent.id}`, {
         method: "PUT",
         headers: {
           "Authorization": `Bearer ${token}`, // Add token
@@ -313,7 +313,7 @@ const StudentManagement = () => {
     if (window.confirm("Are you sure you want to delete this student?")) {
       try {
         const token = getToken();
-        const response = await fetch(`http://127.0.0.1:5000/api/students/${studentId}`, {
+        const response = await fetch(`https://ed-tech-solution-project-back-end.onrender.com/api/students/${studentId}`, {
           method: "DELETE",
           headers: { "Authorization": `Bearer ${token}` },
         });
@@ -391,7 +391,7 @@ const StudentManagement = () => {
         subjects: addingStudent.selectedSubjects,
       };
 
-      const response = await fetch("http://127.0.0.1:5000/api/students", {
+      const response = await fetch("https://ed-tech-solution-project-back-end.onrender.com/api/students", {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${token}`, // Add token

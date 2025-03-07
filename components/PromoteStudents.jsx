@@ -27,7 +27,7 @@ const PromoteStudents = () => {
       setError(null);
       try {
         // Fetch students
-        const studentsResponse = await fetch("http://127.0.0.1:5000/api/students", {
+        const studentsResponse = await fetch("https://ed-tech-solution-project-back-end.onrender.com/api/students", {
           headers: {
             "Authorization": `Bearer ${token}`, // Add token to headers
             "Content-Type": "application/json",
@@ -41,7 +41,7 @@ const PromoteStudents = () => {
         setStudents(studentsData);
 
         // Fetch forms
-        const formsResponse = await fetch("http://127.0.0.1:5000/api/forms", {
+        const formsResponse = await fetch("https://ed-tech-solution-project-back-end.onrender.com/api/forms", {
           headers: { "Authorization": `Bearer ${token}` },
         });
         if (!formsResponse.ok) {
@@ -86,7 +86,7 @@ const PromoteStudents = () => {
 
     try {
       const token = getToken();
-      const response = await fetch("http://127.0.0.1:5000/api/students/promote", {
+      const response = await fetch("https://ed-tech-solution-project-back-end.onrender.com/api/students/promote", {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${token}`, // Add token
@@ -110,7 +110,7 @@ const PromoteStudents = () => {
       setSelectedStudents([]); // Clear selection
 
       // Refresh students list
-      const studentsResponse = await fetch("http://127.0.0.1:5000/api/students", {
+      const studentsResponse = await fetch("https://ed-tech-solution-project-back-end.onrender.com/api/students", {
         headers: { "Authorization": `Bearer ${token}` },
       });
       if (!studentsResponse.ok) throw new Error("Failed to refresh students list");

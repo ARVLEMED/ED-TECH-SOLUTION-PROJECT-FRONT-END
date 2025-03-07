@@ -35,16 +35,16 @@ function TeacherExamspage() {
         },
       };
 
-      const resultsResponse = await axios.get("http://127.0.0.1:5000/api/results", config);
+      const resultsResponse = await axios.get("https://ed-tech-solution-project-back-end.onrender.com/api/results", config);
       setExamRecords(resultsResponse.data);
 
-      const studentsResponse = await axios.get("http://127.0.0.1:5000/api/students", config);
+      const studentsResponse = await axios.get("https://ed-tech-solution-project-back-end.onrender.com/api/students", config);
       setStudents(studentsResponse.data);
 
-      const subjectsResponse = await axios.get("http://127.0.0.1:5000/api/subjects", config);
+      const subjectsResponse = await axios.get("https://ed-tech-solution-project-back-end.onrender.com/api/subjects", config);
       setSubjects(subjectsResponse.data);
 
-      const examsResponse = await axios.get("http://127.0.0.1:5000/api/exams", config);
+      const examsResponse = await axios.get("https://ed-tech-solution-project-back-end.onrender.com/api/exams", config);
       setExams(examsResponse.data);
 
       setError(null);
@@ -107,7 +107,7 @@ function TeacherExamspage() {
     console.log("DEBUG: Token:", token);
 
     try {
-      const teacherResponse = await axios.get("http://127.0.0.1:5000/api/me/teacher", {
+      const teacherResponse = await axios.get("https://ed-tech-solution-project-back-end.onrender.com/api/me/teacher", {
         headers: { "Authorization": `Bearer ${token}` },
       });
       console.log("DEBUG: Teacher Response:", teacherResponse.data);
@@ -139,7 +139,7 @@ function TeacherExamspage() {
       let response;
       if (editingRecord) {
         response = await axios.put(
-          `http://127.0.0.1:5000/api/results/${editingRecord.id}`,
+          `https://ed-tech-solution-project-back-end.onrender.com/api/results/${editingRecord.id}`,
           newRecord,
           config
         );
@@ -149,7 +149,7 @@ function TeacherExamspage() {
         ));
       } else {
         console.log("DEBUG: Sending POST to /api/results");
-        response = await axios.post("http://127.0.0.1:5000/api/results", newRecord, config);
+        response = await axios.post("https://ed-tech-solution-project-back-end.onrender.com/api/results", newRecord, config);
         console.log("Create response:", response.data);
         setExamRecords([...examRecords, response.data]);
       }
@@ -189,7 +189,7 @@ function TeacherExamspage() {
       const config = {
         headers: { "Authorization": `Bearer ${token}` },
       };
-      await axios.delete(`http://127.0.0.1:5000/api/results/${id}`, config);
+      await axios.delete(`https://ed-tech-solution-project-back-end.onrender.com/api/results/${id}`, config);
       setExamRecords(examRecords.filter((record) => record.id !== id));
     } catch (err) {
       console.error("Failed to delete exam result:", err);

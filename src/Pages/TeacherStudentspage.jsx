@@ -30,7 +30,7 @@ function TeacherStudentspage() {
         },
       };
 
-      const response = await axios.get("http://127.0.0.1:5000/api/students", config);
+      const response = await axios.get("https://ed-tech-solution-project-back-end.onrender.com/api/students", config);
       setStudentsData(response.data);
       setError("");
     } catch (err) {

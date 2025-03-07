@@ -34,7 +34,7 @@ function ExamManagement() {
         setError("");
         try {
             const token = getToken();
-            const response = await fetch("http://127.0.0.1:5000/api/exams", {
+            const response = await fetch("https://ed-tech-solution-project-back-end.onrender.com/api/exams", {
                 headers: {
                     "Authorization": `Bearer ${token}`, // Add token to headers
                     "Content-Type": "application/json",
@@ -57,7 +57,7 @@ function ExamManagement() {
     const fetchForms = async () => {
         try {
             const token = getToken();
-            const response = await fetch("http://127.0.0.1:5000/api/forms", {
+            const response = await fetch("https://ed-tech-solution-project-back-end.onrender.com/api/forms", {
                 headers: { "Authorization": `Bearer ${token}` },
             });
             if (!response.ok) {
@@ -87,8 +87,8 @@ function ExamManagement() {
         try {
             const token = getToken();
             const url = editingExam
-                ? `http://127.0.0.1:5000/api/exams/${editingExam.id}`
-                : "http://127.0.0.1:5000/api/exams";
+                ? `https://ed-tech-solution-project-back-end.onrender.com/api/exams/${editingExam.id}`
+                : "https://ed-tech-solution-project-back-end.onrender.com/api/exams";
             const method = editingExam ? "PUT" : "POST";
 
             const payload = {
@@ -140,7 +140,7 @@ function ExamManagement() {
         setError("");
         try {
             const token = getToken();
-            const response = await fetch(`http://127.0.0.1:5000/api/exams/${id}`, {
+            const response = await fetch(`https://ed-tech-solution-project-back-end.onrender.com/api/exams/${id}`, {
                 method: "DELETE",
                 headers: { "Authorization": `Bearer ${token}` },
             });

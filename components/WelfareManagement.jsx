@@ -29,7 +29,7 @@ function WelfareManagement() {
             setLoading(true);
             setError('');
             try {
-                const response = await fetch("http://127.0.0.1:5000/api/students", {
+                const response = await fetch("https://ed-tech-solution-project-back-end.onrender.com/api/students", {
                     headers: {
                         "Authorization": `Bearer ${token}`, // Add token
                         "Content-Type": "application/json",
@@ -88,7 +88,7 @@ function WelfareManagement() {
         setError('');
         try {
             const token = getToken();
-            const url = `http://127.0.0.1:5000/api/students/${studentId}/welfare_reports?category=${encodeURIComponent(category)}`;
+            const url = `https://ed-tech-solution-project-back-end.onrender.com/api/students/${studentId}/welfare_reports?category=${encodeURIComponent(category)}`;
             const response = await fetch(url, {
                 headers: {
                     "Authorization": `Bearer ${token}`, // Add token
@@ -122,7 +122,7 @@ function WelfareManagement() {
         setError('');
         try {
             const token = getToken();
-            const response = await fetch("http://127.0.0.1:5000/api/welfare_reports", {
+            const response = await fetch("https://ed-tech-solution-project-back-end.onrender.com/api/welfare_reports", {
                 method: "POST",
                 headers: {
                     "Authorization": `Bearer ${token}`, // Add token

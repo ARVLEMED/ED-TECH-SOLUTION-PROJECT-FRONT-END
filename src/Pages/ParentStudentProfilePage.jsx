@@ -22,7 +22,7 @@ const ParentStudentProfilePage = () => {
       }
 
       console.log("Fetching student data for ID:", studentId);
-      const response = await fetch(`http://127.0.0.1:5000/api/students/${studentId}`, {
+      const response = await fetch(`https://ed-tech-solution-project-back-end.onrender.com/api/students/${studentId}`, {
         headers: {
           "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json",

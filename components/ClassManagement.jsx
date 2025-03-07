@@ -41,7 +41,7 @@ function ClassManagement() {
     setError("");
     try {
       const token = getToken();
-      const response = await fetch("http://127.0.0.1:5000/api/classes", {
+      const response = await fetch("https://ed-tech-solution-project-back-end.onrender.com/api/classes", {
         headers: {
           "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -71,7 +71,7 @@ function ClassManagement() {
   const fetchForms = useCallback(async () => {
     try {
       const token = getToken();
-      const response = await fetch("http://127.0.0.1:5000/api/forms", {
+      const response = await fetch("https://ed-tech-solution-project-back-end.onrender.com/api/forms", {
         headers: { "Authorization": `Bearer ${token}` },
       });
       if (!response.ok) throw new Error("Failed to fetch forms");
@@ -85,7 +85,7 @@ function ClassManagement() {
   const fetchTeachers = useCallback(async () => {
     try {
       const token = getToken();
-      const response = await fetch("http://127.0.0.1:5000/api/teachers", {
+      const response = await fetch("https://ed-tech-solution-project-back-end.onrender.com/api/teachers", {
         headers: { "Authorization": `Bearer ${token}` },
       });
       if (!response.ok) throw new Error("Failed to fetch teachers");
@@ -133,8 +133,8 @@ function ClassManagement() {
     try {
       const token = getToken();
       const url = editingClass
-        ? `http://127.0.0.1:5000/api/classes/${editingClass.id}`
-        : "http://127.0.0.1:5000/api/classes";
+        ? `https://ed-tech-solution-project-back-end.onrender.com/api/classes/${editingClass.id}`
+        : "https://ed-tech-solution-project-back-end.onrender.com/api/classes";
       const method = editingClass ? "PUT" : "POST";
 
       const response = await fetch(url, {
@@ -173,7 +173,7 @@ function ClassManagement() {
     setError("");
     try {
       const token = getToken();
-      const response = await fetch(`http://127.0.0.1:5000/api/classes/${id}`, {
+      const response = await fetch(`https://ed-tech-solution-project-back-end.onrender.com/api/classes/${id}`, {
         method: "DELETE",
         headers: { "Authorization": `Bearer ${token}` },
       });

@@ -27,7 +27,7 @@ const HomePage = () => {
       const parentId = user.id;
       console.log("Fetching students for parent ID:", parentId);
 
-      const response = await fetch(`http://127.0.0.1:5000/api/parents/${parentId}/students`, {
+      const response = await fetch(`https://ed-tech-solution-project-back-end.onrender.com/api/parents/${parentId}/students`, {
         headers: {
           "Authorization": `Bearer ${token}`, // Add JWT token
           "Content-Type": "application/json",

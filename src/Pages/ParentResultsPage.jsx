@@ -36,7 +36,7 @@ const ResultsPage = () => {
         throw new Error("Unauthorized: Must be logged in as a parent");
       }
 
-      const response = await fetch(`http://127.0.0.1:5000/api/students/${studentId}`, {
+      const response = await fetch(`https://ed-tech-solution-project-back-end.onrender.com/api/students/${studentId}`, {
         headers: {
           "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -72,7 +72,7 @@ const ResultsPage = () => {
       const token = getToken();
       console.log(`Fetching results for student ${studentId}, form: ${form}, term: ${term}`);
       const response = await fetch(
-        `http://127.0.0.1:5000/api/students/${studentId}/results?form=${encodeURIComponent(form)}&term=${encodeURIComponent(term)}`,
+        `https://ed-tech-solution-project-back-end.onrender.com/api/students/${studentId}/results?form=${encodeURIComponent(form)}&term=${encodeURIComponent(term)}`,
         {
           headers: {
             "Authorization": `Bearer ${token}`,

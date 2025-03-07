@@ -57,7 +57,7 @@ const TeacherManagement = () => {
     setIsLoading(true);
     try {
       const token = getToken();
-      const response = await fetch("http://localhost:5000/api/teachers", {
+      const response = await fetch("https://ed-tech-solution-project-back-end.onrender.com/api/teachers", {
         headers: {
           "Authorization": `Bearer ${token}`, // Add token
           "Content-Type": "application/json",
@@ -89,7 +89,7 @@ const TeacherManagement = () => {
   const fetchClasses = useCallback(async () => {
     try {
       const token = getToken();
-      const response = await fetch("http://localhost:5000/api/classes", {
+      const response = await fetch("https://ed-tech-solution-project-back-end.onrender.com/api/classes", {
         headers: { "Authorization": `Bearer ${token}` },
       });
       if (!response.ok) {
@@ -107,7 +107,7 @@ const TeacherManagement = () => {
   const fetchSubjects = useCallback(async () => {
     try {
       const token = getToken();
-      const response = await fetch("http://localhost:5000/api/subjects", {
+      const response = await fetch("https://ed-tech-solution-project-back-end.onrender.com/api/subjects", {
         headers: { "Authorization": `Bearer ${token}` },
       });
       if (!response.ok) {
@@ -171,7 +171,7 @@ const TeacherManagement = () => {
   const handleSaveEdit = async () => {
     try {
       const token = getToken();
-      const response = await fetch(`http://localhost:5000/api/teachers/${editingTeacher.id}`, {
+      const response = await fetch(`https://ed-tech-solution-project-back-end.onrender.com/api/teachers/${editingTeacher.id}`, {
         method: "PUT",
         headers: {
           "Authorization": `Bearer ${token}`, // Add token
@@ -213,7 +213,7 @@ const TeacherManagement = () => {
     if (window.confirm("Are you sure you want to delete this teacher?")) {
       try {
         const token = getToken();
-        const response = await fetch(`http://localhost:5000/api/teachers/${teacherId}`, {
+        const response = await fetch(`https://ed-tech-solution-project-back-end.onrender.com/api/teachers/${teacherId}`, {
           method: "DELETE",
           headers: { "Authorization": `Bearer ${token}` },
         });
@@ -273,7 +273,7 @@ const TeacherManagement = () => {
     }
     try {
       const token = getToken();
-      const response = await fetch("http://localhost:5000/api/teachers", {
+      const response = await fetch("https://ed-tech-solution-project-back-end.onrender.com/api/teachers", {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${token}`, // Add token

@@ -39,7 +39,7 @@ function TeacherWelfare() {
       };
 
       const response = await fetch(
-        `http://127.0.0.1:5000/api/classes?class_teacher_id=${user.id}`,
+        `https://ed-tech-solution-project-back-end.onrender.com/api/classes?class_teacher_id=${user.id}`,
         config
       );
       if (!response.ok) {
@@ -49,7 +49,7 @@ function TeacherWelfare() {
       const classes = await response.json();
 
       const studentPromises = classes.map((cls) =>
-        fetch(`http://127.0.0.1:5000/api/students?school_class_id=${cls.id}`, config).then((res) => res.json())
+        fetch(`https://ed-tech-solution-project-back-end.onrender.com/api/students?school_class_id=${cls.id}`, config).then((res) => res.json())
       );
       const studentResults = await Promise.all(studentPromises);
       const allStudents = studentResults.flat();
@@ -98,7 +98,7 @@ function TeacherWelfare() {
       };
 
       const response = await fetch(
-        `http://127.0.0.1:5000/api/students/${selectedStudentId}/welfare_reports?category=${selectedTab}`,
+        `https://ed-tech-solution-project-back-end.onrender.com/api/students/${selectedStudentId}/welfare_reports?category=${selectedTab}`,
         config
       );
       if (!response.ok) {
@@ -165,8 +165,8 @@ function TeacherWelfare() {
       console.log("Saving welfare report with payload:", payload);
 
       const url = reportId
-        ? `http://127.0.0.1:5000/api/welfare_reports/${reportId}`
-        : "http://127.0.0.1:5000/api/welfare_reports";
+        ? `https://ed-tech-solution-project-back-end.onrender.com/api/welfare_reports/${reportId}`
+        : "https://ed-tech-solution-project-back-end.onrender.com/api/welfare_reports";
       const method = reportId ? "PUT" : "POST";
 
       const response = await fetch(url, {

@@ -26,7 +26,7 @@ const WelfarePage = ({ category = "Discipline" , studentId }) => {
       }
 
       // Fetch student data to validate parent ownership
-      const studentResponse = await fetch(`http://127.0.0.1:5000/api/students/${studentId}`, {
+      const studentResponse = await fetch(`https://ed-tech-solution-project-back-end.onrender.com/api/students/${studentId}`, {
         headers: {
           "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -45,7 +45,7 @@ const WelfarePage = ({ category = "Discipline" , studentId }) => {
 
       // Fetch welfare reports
       const response = await fetch(
-        `http://127.0.0.1:5000/api/students/${studentId}/welfare_reports?category=${encodeURIComponent(category)}`,
+        `https://ed-tech-solution-project-back-end.onrender.com/api/students/${studentId}/welfare_reports?category=${encodeURIComponent(category)}`,
         {
           headers: {
             "Authorization": `Bearer ${token}`,

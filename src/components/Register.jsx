@@ -31,7 +31,7 @@ const Register = () => {
     setError("");
 
     try {
-      const response = await fetch("http://127.0.0.1:5000/api/users", {
+      const response = await fetch("https://ed-tech-solution-project-back-end.onrender.com/api/users", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
