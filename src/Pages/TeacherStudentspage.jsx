@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // Added for navigation
+import { useNavigate } from "react-router-dom";
 import "../Styles/TeacherStudentsPage.css";
 import { FaSearch, FaTimes } from "react-icons/fa";
-import axios from "axios";
-import { getToken } from "../../components/Auth"; // Ensure path is correct
+import { fetchWithAuth } from "../src/utils/api"; // Import fetchWithAuth
 
 function TeacherStudentspage() {
   const navigate = useNavigate();
@@ -13,42 +12,27 @@ function TeacherStudentspage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // Fetch students from the backend with authentication
   const fetchStudents = async () => {
     try {
-      const token = getToken();
       const user = JSON.parse(localStorage.getItem("user") || "{}");
-
-      if (!token || user.role !== "teacher") {
+      if (!user.id || user.role !== "teacher") {
         throw new Error("Unauthorized: Must be logged in as a teacher");
       }
 
-      const config = {
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      };
-
-      const response = await axios.get("https://ed-tech-solution-project-back-end.onrender.com/api/students", config);
-      setStudentsData(response.data);
+      const data = await fetchWithAuth("students");
+      setStudentsData(data);
       setError("");
     } catch (err) {
       console.error("Failed to fetch students:", err);
-      setError(err.response?.data?.message || "Failed to fetch students. Please try again later.");
-      if (err.message === "Unauthorized" || err.response?.status === 401) {
-        navigate("/login");
-      }
+      setError(err.message || "Failed to fetch students. Please try again later.");
     } finally {
       setLoading(false);
     }
   };
 
-  // Fetch students on mount with auth check
   useEffect(() => {
-    const token = getToken();
     const user = JSON.parse(localStorage.getItem("user") || "{}");
-    if (!token || user.role !== "teacher") {
+    if (!localStorage.getItem("token") || user.role !== "teacher") {
       setError("Unauthorized access. Please log in as a teacher.");
       navigate("/login");
       return;
@@ -69,10 +53,7 @@ function TeacherStudentspage() {
     setSelectedStudent(null);
   };
 
-  // Render-time auth check
-  const token = getToken();
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
-  if (!token || user.role !== "teacher") {
+  if (!localStorage.getItem("token") || JSON.parse(localStorage.getItem("user") || "{}").role !== "teacher") {
     navigate("/login");
     return null;
   }
@@ -94,7 +75,6 @@ function TeacherStudentspage() {
     <div className="students-container">
       <h2 className="title">Students List</h2>
 
-      {/* Search Bar with Icon and Clear Button */}
       <div className="search-container">
         <FaSearch className="search-icon" />
         <input
@@ -111,7 +91,6 @@ function TeacherStudentspage() {
         )}
       </div>
 
-      {/* Student List */}
       <ul className="student-list">
         {filteredStudents.length > 0 ? (
           filteredStudents.map((student) => (
@@ -133,7 +112,6 @@ function TeacherStudentspage() {
         )}
       </ul>
 
-      {/* Student Details Modal */}
       {selectedStudent && (
         <div className="student-details-modal">
           <div className="student-details-content">

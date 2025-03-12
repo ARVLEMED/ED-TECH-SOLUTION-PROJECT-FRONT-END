@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../Styles/TeacherWelfare.css";
-import { getToken } from "../../components/Auth";
+import { fetchWithAuth } from "../src/utils/api"; // Import fetchWithAuth
 
 function TeacherWelfare() {
   const navigate = useNavigate();
@@ -24,32 +24,14 @@ function TeacherWelfare() {
     setError(null);
 
     try {
-      const token = getToken();
       const user = JSON.parse(localStorage.getItem("user") || "{}");
-
-      if (!token || user.role !== "teacher") {
+      if (!user.id || user.role !== "teacher") {
         throw new Error("Unauthorized: Must be logged in as a teacher");
       }
 
-      const config = {
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      };
-
-      const response = await fetch(
-        `https://ed-tech-solution-project-back-end.onrender.com/api/classes?class_teacher_id=${user.id}`,
-        config
-      );
-      if (!response.ok) {
-        if (response.status === 401) throw new Error("Unauthorized");
-        throw new Error("Failed to fetch classes");
-      }
-      const classes = await response.json();
-
+      const classes = await fetchWithAuth(`classes?class_teacher_id=${user.id}`);
       const studentPromises = classes.map((cls) =>
-        fetch(`https://ed-tech-solution-project-back-end.onrender.com/api/students?school_class_id=${cls.id}`, config).then((res) => res.json())
+        fetchWithAuth(`students?school_class_id=${cls.id}`)
       );
       const studentResults = await Promise.all(studentPromises);
       const allStudents = studentResults.flat();
@@ -61,16 +43,14 @@ function TeacherWelfare() {
       console.error("Error fetching students:", err);
       setError(err.message);
       setStudents([]);
-      if (err.message === "Unauthorized") navigate("/login");
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    const token = getToken();
     const user = JSON.parse(localStorage.getItem("user") || "{}");
-    if (!token || user.role !== "teacher") {
+    if (!localStorage.getItem("token") || user.role !== "teacher") {
       setError("Unauthorized access. Please log in as a teacher.");
       navigate("/login");
       return;
@@ -89,31 +69,15 @@ function TeacherWelfare() {
     setError(null);
 
     try {
-      const token = getToken();
-      const config = {
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      };
-
-      const response = await fetch(
-        `https://ed-tech-solution-project-back-end.onrender.com/api/students/${selectedStudentId}/welfare_reports?category=${selectedTab}`,
-        config
+      const reports = await fetchWithAuth(
+        `students/${selectedStudentId}/welfare_reports?category=${selectedTab}`
       );
-      if (!response.ok) {
-        if (response.status === 401) throw new Error("Unauthorized");
-        throw new Error(`Failed to fetch ${selectedTab} welfare reports`);
-      }
-      const reports = await response.json();
-      console.log(`Fetched past ${selectedTab} reports:`, reports);
       setWelfareReports(reports);
       setShowPastReports(true);
     } catch (err) {
       console.error("Error fetching past reports:", err);
       setError(err.message);
       setWelfareReports([]);
-      if (err.message === "Unauthorized") navigate("/login");
     } finally {
       setLoading(false);
     }
@@ -149,41 +113,20 @@ function TeacherWelfare() {
     setError(null);
 
     try {
-      const token = getToken();
-      const config = {
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      };
-
       const payload = {
         student_id: parseInt(selectedStudentId, 10),
         category: selectedTab,
         remarks: welfareData[selectedTab],
       };
-      console.log("Saving welfare report with payload:", payload);
 
-      const url = reportId
-        ? `https://ed-tech-solution-project-back-end.onrender.com/api/welfare_reports/${reportId}`
-        : "https://ed-tech-solution-project-back-end.onrender.com/api/welfare_reports";
+      const url = reportId ? `welfare_reports/${reportId}` : "welfare_reports";
       const method = reportId ? "PUT" : "POST";
 
-      const response = await fetch(url, {
+      const result = await fetchWithAuth(url, {
         method,
-        ...config,
         body: JSON.stringify(payload),
       });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error(`Failed to save welfare data: ${response.status} - ${errorText}`);
-        if (response.status === 401) throw new Error("Unauthorized");
-        throw new Error(errorText || "Failed to save welfare data");
-      }
-
-      const result = await response.json();
-      console.log("Save response:", result);
       if (method === "POST") {
         setReportId(result.id);
       }
@@ -196,7 +139,6 @@ function TeacherWelfare() {
     } catch (err) {
       console.error("Error saving welfare data:", err);
       setError(err.message);
-      if (err.message === "Unauthorized") navigate("/login");
     } finally {
       setLoading(false);
     }
@@ -206,9 +148,7 @@ function TeacherWelfare() {
     setShowPastReports(false);
   };
 
-  const token = getToken();
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
-  if (!token || user.role !== "teacher") {
+  if (!localStorage.getItem("token") || JSON.parse(localStorage.getItem("user") || "{}").role !== "teacher") {
     navigate("/login");
     return null;
   }

@@ -8,7 +8,7 @@ import {
   faSpinner,
 } from "@fortawesome/free-solid-svg-icons";
 import "./ClassManagement.css";
-import { getToken } from "./Auth";
+import { fetchWithAuth } from "../src/utils/api"; // Import fetchWithAuth
 
 function ClassManagement() {
   const [classes, setClasses] = useState([]);
@@ -23,9 +23,8 @@ function ClassManagement() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = getToken();
     const user = JSON.parse(localStorage.getItem("user"));
-    if (!token || !user || user.role !== "admin") {
+    if (!localStorage.getItem("token") || !user || user.role !== "admin") {
       setError("Unauthorized access. Please log in as an admin.");
       navigate("/login");
       return;
@@ -40,18 +39,7 @@ function ClassManagement() {
     setLoading(true);
     setError("");
     try {
-      const token = getToken();
-      const response = await fetch("https://ed-tech-solution-project-back-end.onrender.com/api/classes", {
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-      if (!response.ok) {
-        if (response.status === 401) throw new Error("Unauthorized");
-        throw new Error("Failed to fetch classes");
-      }
-      const data = await response.json();
+      const data = await fetchWithAuth("classes");
       const transformedClasses = data.map((cls) => {
         const teacher = teachers.find((t) => t.id === cls.class_teacher_id);
         return {
@@ -62,20 +50,14 @@ function ClassManagement() {
       setClasses(transformedClasses || []);
     } catch (err) {
       setError(err.message);
-      if (err.message === "Unauthorized") navigate("/login");
     } finally {
       setLoading(false);
     }
-  }, [teachers, navigate]);
+  }, [teachers]);
 
   const fetchForms = useCallback(async () => {
     try {
-      const token = getToken();
-      const response = await fetch("https://ed-tech-solution-project-back-end.onrender.com/api/forms", {
-        headers: { "Authorization": `Bearer ${token}` },
-      });
-      if (!response.ok) throw new Error("Failed to fetch forms");
-      const data = await response.json();
+      const data = await fetchWithAuth("forms");
       setForms(data || []);
     } catch (err) {
       setError(err.message);
@@ -84,12 +66,7 @@ function ClassManagement() {
 
   const fetchTeachers = useCallback(async () => {
     try {
-      const token = getToken();
-      const response = await fetch("https://ed-tech-solution-project-back-end.onrender.com/api/teachers", {
-        headers: { "Authorization": `Bearer ${token}` },
-      });
-      if (!response.ok) throw new Error("Failed to fetch teachers");
-      const data = await response.json();
+      const data = await fetchWithAuth("teachers");
       const transformedTeachers = data.map((teacher) => ({
         id: teacher.id,
         username: teacher.username || "Unknown",
@@ -131,18 +108,11 @@ function ClassManagement() {
     setLoading(true);
     setError("");
     try {
-      const token = getToken();
-      const url = editingClass
-        ? `https://ed-tech-solution-project-back-end.onrender.com/api/classes/${editingClass.id}`
-        : "https://ed-tech-solution-project-back-end.onrender.com/api/classes";
+      const url = editingClass ? `classes/${editingClass.id}` : "classes";
       const method = editingClass ? "PUT" : "POST";
 
-      const response = await fetch(url, {
+      await fetchWithAuth(url, {
         method,
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify({
           name: newClass.name,
           form_id: parseInt(newClass.form_id),
@@ -150,18 +120,11 @@ function ClassManagement() {
         }),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        if (response.status === 401) throw new Error("Unauthorized");
-        throw new Error(errorData.message || "Failed to save class");
-      }
-
       await fetchClasses();
       resetForm();
       alert(editingClass ? "Class updated successfully!" : "Class added successfully!");
     } catch (err) {
       setError(err.message);
-      if (err.message === "Unauthorized") navigate("/login");
     } finally {
       setLoading(false);
     }
@@ -172,27 +135,17 @@ function ClassManagement() {
     setLoading(true);
     setError("");
     try {
-      const token = getToken();
-      const response = await fetch(`https://ed-tech-solution-project-back-end.onrender.com/api/classes/${id}`, {
-        method: "DELETE",
-        headers: { "Authorization": `Bearer ${token}` },
-      });
-      if (!response.ok) {
-        if (response.status === 401) throw new Error("Unauthorized");
-        throw new Error("Failed to delete class");
-      }
+      await fetchWithAuth(`classes/${id}`, { method: "DELETE" });
       await fetchClasses();
     } catch (err) {
       setError(err.message);
-      if (err.message === "Unauthorized") navigate("/login");
     } finally {
       setLoading(false);
     }
   };
 
-  // Added editClass function
   const editClass = (cls) => {
-    console.log("Editing class:", cls); // Debug log
+    console.log("Editing class:", cls);
     setEditingClass(cls);
     setNewClass({
       name: cls.name || "",
@@ -202,8 +155,7 @@ function ClassManagement() {
     setShowForm(true);
   };
 
-  // Redirect to login if not authenticated on render
-  if (!getToken()) {
+  if (!localStorage.getItem("token")) {
     navigate("/login");
     return null;
   }

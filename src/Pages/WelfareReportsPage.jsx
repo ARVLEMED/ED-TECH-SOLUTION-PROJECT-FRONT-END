@@ -1,45 +1,33 @@
-import React, { useState, useEffect } from "react"; // Added useEffect
+import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { FaBars, FaSignOutAlt } from "react-icons/fa";
 import WelfarePage from "./ParentWelfare"; // Assuming this is the correct import
 import "../Styles/WelfareReports.css";
-import { getToken } from "../../components/Auth"; // Ensure path is correct
 
 const WelfareReportsPage = () => {
   const [selectedReport, setSelectedReport] = useState("academic");
   const navigate = useNavigate();
   const { studentId } = useParams();
 
-  // Check authentication on mount
   useEffect(() => {
-    const token = getToken();
     const user = JSON.parse(localStorage.getItem("user") || "{}");
-    if (!token || user.role !== "parent") {
-      console.log("Unauthorized access attempt. Redirecting to login.");
+    if (!localStorage.getItem("token") || user.role !== "parent") {
       navigate("/login");
-    } else {
-      // Optionally verify student ownership here with an API call if needed
-      // For simplicity, we rely on WelfarePage to handle this
     }
+    // No additional API call needed here; WelfarePage handles student ownership
   }, [navigate, studentId]);
 
-  // Component definitions with studentId passed to WelfarePage
-  const AcademicWelfare = () => <WelfarePage category="Academic" studentId={studentId} />;
-  const HealthWelfare = () => <WelfarePage category="Health" studentId={studentId} />;
-  const DisciplineWelfare = () => <WelfarePage category="Discipline" studentId={studentId} />;
+  const AcademicWelfare = () => <WelfarePage category="Academic" />;
+  const HealthWelfare = () => <WelfarePage category="Health" />;
+  const DisciplineWelfare = () => <WelfarePage category="Discipline" />;
 
-  // Handle logout
   const handleLogout = () => {
-    console.log("User logged out");
-    localStorage.removeItem("token"); // Clear token
-    localStorage.removeItem("user");  // Clear user data
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
     navigate("/login");
   };
 
-  // Render-time auth check
-  const token = getToken();
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
-  if (!token || user.role !== "parent") {
+  if (!localStorage.getItem("token") || JSON.parse(localStorage.getItem("user") || "{}").role !== "parent") {
     navigate("/login");
     return null;
   }

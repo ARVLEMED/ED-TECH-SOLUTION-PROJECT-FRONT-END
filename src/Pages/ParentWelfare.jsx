@@ -2,22 +2,20 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { FaBars, FaSignOutAlt } from "react-icons/fa";
 import "../Styles/Welfare.css";
-import { getToken } from "../../components/Auth"; // Ensure path is correct
+import { fetchWithAuth } from "../src/utils/api"; // Import fetchWithAuth
 
-const WelfarePage = ({ category = "Discipline" , studentId }) => {
+const WelfarePage = ({ category = "Discipline" }) => {
   const navigate = useNavigate();
+  const { studentId } = useParams(); // Use useParams to get studentId from URL
   const [welfareReports, setWelfareReports] = useState([]);
-  const [studentData, setStudentData] = useState(null); // Added to store student details
+  const [studentData, setStudentData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch student data and welfare reports with authentication
   const fetchWelfareData = async () => {
     try {
-      const token = getToken();
       const user = JSON.parse(localStorage.getItem("user") || "{}");
-
-      if (!token || user.role !== "parent") {
+      if (!user.id || user.role !== "parent") {
         throw new Error("Unauthorized: Must be logged in as a parent");
       }
 
@@ -26,42 +24,16 @@ const WelfarePage = ({ category = "Discipline" , studentId }) => {
       }
 
       // Fetch student data to validate parent ownership
-      const studentResponse = await fetch(`https://ed-tech-solution-project-back-end.onrender.com/api/students/${studentId}`, {
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-      if (!studentResponse.ok) {
-        if (studentResponse.status === 401) throw new Error("Unauthorized");
-        if (studentResponse.status === 404) throw new Error("Student not found or not authorized");
-        throw new Error("Failed to fetch student data");
-      }
-      const student = await studentResponse.json();
+      const student = await fetchWithAuth(`students/${studentId}`);
       if (student.parent_id !== user.id) {
         throw new Error("You are not authorized to view this student's welfare reports");
       }
       setStudentData(student);
 
       // Fetch welfare reports
-      const response = await fetch(
-        `https://ed-tech-solution-project-back-end.onrender.com/api/students/${studentId}/welfare_reports?category=${encodeURIComponent(category)}`,
-        {
-          headers: {
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
+      const data = await fetchWithAuth(
+        `students/${studentId}/welfare_reports?category=${encodeURIComponent(category)}`
       );
-      if (!response.ok) {
-        if (response.status === 401) throw new Error("Unauthorized");
-        if (response.status === 404) throw new Error(`${category} welfare reports not found`);
-        if (response.status === 400) throw new Error("Invalid category specified");
-        throw new Error(`Failed to fetch ${category.toLowerCase()} welfare data`);
-      }
-      const data = await response.json();
-      console.log(`Backend Response for ${category} Welfare:`, data);
-
       if (!data || data.length === 0) {
         setWelfareReports([]);
       } else {
@@ -78,17 +50,14 @@ const WelfarePage = ({ category = "Discipline" , studentId }) => {
     } catch (error) {
       console.error("Error fetching welfare data:", error);
       setError(error.message);
-      if (error.message === "Unauthorized") navigate("/login");
     } finally {
       setLoading(false);
     }
   };
 
-  // Fetch data on mount with auth check
   useEffect(() => {
-    const token = getToken();
     const user = JSON.parse(localStorage.getItem("user") || "{}");
-    if (!token || user.role !== "parent") {
+    if (!localStorage.getItem("token") || user.role !== "parent") {
       setError("Unauthorized access. Please log in as a parent.");
       navigate("/login");
       return;
@@ -102,7 +71,7 @@ const WelfarePage = ({ category = "Discipline" , studentId }) => {
       <header className="header">
         <FaBars
           className="menu-icon"
-          onClick={() => navigate(`/student-profile/${studentId}`)} // Navigate back to profile
+          onClick={() => navigate(`/student-profile/${studentId}`)}
         />
         <h1 className="title">{title}</h1>
         <FaSignOutAlt
@@ -125,10 +94,7 @@ const WelfarePage = ({ category = "Discipline" , studentId }) => {
     </div>
   );
 
-  // Render-time auth check
-  const token = getToken();
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
-  if (!token || user.role !== "parent") {
+  if (!localStorage.getItem("token") || JSON.parse(localStorage.getItem("user") || "{}").role !== "parent") {
     navigate("/login");
     return null;
   }

@@ -4,7 +4,7 @@ import { LogOut } from "lucide-react";
 import logo from "../assets/logo.png";
 import studentImage from "../assets/face1.jpg";
 import "../Styles/ParentHomePage.css";
-import { getToken } from "../../components/Auth"; // Ensure path is correct
+import { fetchWithAuth } from "../src/utils/api"; // Import fetchWithAuth
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -13,52 +13,29 @@ const HomePage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch students with authentication
   const fetchStudents = async () => {
     try {
-      const token = getToken();
       const user = JSON.parse(localStorage.getItem("user") || "{}");
-
-      // Check if user is authenticated and a parent
-      if (!token || user.role !== "parent") {
+      if (!user.id || user.role !== "parent") {
         throw new Error("User not authenticated as a parent");
       }
 
       const parentId = user.id;
-      console.log("Fetching students for parent ID:", parentId);
-
-      const response = await fetch(`https://ed-tech-solution-project-back-end.onrender.com/api/parents/${parentId}/students`, {
-        headers: {
-          "Authorization": `Bearer ${token}`, // Add JWT token
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.ok) {
-        if (response.status === 401) throw new Error("Unauthorized");
-        if (response.status === 404) throw new Error("Parent or students not found");
-        throw new Error("Failed to fetch students");
-      }
-
-      const data = await response.json();
-      console.log("Fetched Students for Parent:", data);
+      const data = await fetchWithAuth(`parents/${parentId}/students`);
       setStudentsData(data);
       setFilteredStudents(data);
       setError(null);
     } catch (error) {
       console.error("Error fetching students:", error);
       setError(error.message);
-      if (error.message === "Unauthorized") navigate("/login");
     } finally {
       setLoading(false);
     }
   };
 
-  // Fetch students on mount with auth check
   useEffect(() => {
-    const token = getToken();
     const user = JSON.parse(localStorage.getItem("user") || "{}");
-    if (!token || user.role !== "parent") {
+    if (!localStorage.getItem("token") || user.role !== "parent") {
       setError("Unauthorized access. Please log in as a parent.");
       navigate("/login");
       return;
@@ -76,9 +53,8 @@ const HomePage = () => {
   };
 
   const handleLogout = () => {
-    console.log("User logged out");
-    localStorage.removeItem("token"); // Clear token
-    localStorage.removeItem("user");  // Clear user data
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
     navigate("/login");
   };
 
@@ -88,10 +64,7 @@ const HomePage = () => {
     fetchStudents();
   };
 
-  // Render-time auth check
-  const token = getToken();
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
-  if (!token || user.role !== "parent") {
+  if (!localStorage.getItem("token") || JSON.parse(localStorage.getItem("user") || "{}").role !== "parent") {
     navigate("/login");
     return null;
   }

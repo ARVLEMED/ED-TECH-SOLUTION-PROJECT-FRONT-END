@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // Added for navigation
+import { useNavigate } from "react-router-dom";
 import { FaSearch, FaPlus, FaEdit, FaTrash, FaSave, FaTimes } from "react-icons/fa";
 import './StudentManagement.css';
-import { getToken } from "./Auth";
+import { fetchWithAuth } from "../src/utils/api"; // Import fetchWithAuth
 
 const StudentManagement = () => {
   const navigate = useNavigate();
@@ -19,11 +19,9 @@ const StudentManagement = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  // Fetch data on mount with auth check
   useEffect(() => {
-    const token = getToken();
     const user = JSON.parse(localStorage.getItem("user") || "{}");
-    if (!token || user.role !== "admin") {
+    if (!localStorage.getItem("token") || user.role !== "admin") {
       setMessage("Unauthorized access. Please log in as an admin.");
       navigate("/login");
       return;
@@ -31,9 +29,7 @@ const StudentManagement = () => {
 
     const fetchData = async () => {
       await fetchClasses();
-      console.log("Classes after fetch:", classes);
       await fetchStudents();
-      console.log("Students after fetch:", students);
       await fetchParents();
       await fetchSubjects();
     };
@@ -43,22 +39,8 @@ const StudentManagement = () => {
   const fetchStudents = async () => {
     setIsLoading(true);
     try {
-      const token = getToken();
-      const response = await fetch("https://ed-tech-solution-project-back-end.onrender.com/api/students", {
-        headers: {
-          "Authorization": `Bearer ${token}`, // Add token
-          "Content-Type": "application/json",
-        },
-      });
-      if (!response.ok) {
-        if (response.status === 401) throw new Error("Unauthorized");
-        throw new Error("Failed to fetch students");
-      }
-      const data = await response.json();
-      console.log("Fetched Students:", data);
-
+      const data = await fetchWithAuth("students");
       const studentsWithDefaults = await Promise.all(data.map(async (student) => {
-        console.log(`Student ${student.name} - school_class_id: ${student.school_class_id}, class_name: ${student.class_name}`);
         const studentSubjects = await fetchStudentSubjects(student.id);
         return {
           ...student,
@@ -70,7 +52,6 @@ const StudentManagement = () => {
     } catch (error) {
       console.error("Error fetching students:", error);
       setMessage(error.message);
-      if (error.message === "Unauthorized") navigate("/login");
     } finally {
       setIsLoading(false);
     }
@@ -78,130 +59,65 @@ const StudentManagement = () => {
 
   const fetchClasses = async () => {
     try {
-      const token = getToken();
-      const response = await fetch("https://ed-tech-solution-project-back-end.onrender.com/api/classes", {
-        headers: { "Authorization": `Bearer ${token}` },
-      });
-      if (!response.ok) {
-        if (response.status === 401) throw new Error("Unauthorized");
-        throw new Error("Failed to fetch classes");
-      }
-      const data = await response.json();
-      console.log("Fetched Classes:", data);
+      const data = await fetchWithAuth("classes");
       const simplifiedClasses = data.map(cls => ({ id: cls.id, name: cls.name }));
       setClasses(simplifiedClasses);
     } catch (error) {
       console.error("Error fetching classes:", error);
       setMessage(error.message);
-      if (error.message === "Unauthorized") navigate("/login");
     }
   };
 
   const fetchParents = async () => {
     try {
-      const token = getToken();
-      const response = await fetch("https://ed-tech-solution-project-back-end.onrender.com/api/users/by-role?role=parent", {
-        headers: { "Authorization": `Bearer ${token}` },
-      });
-      if (!response.ok) {
-        if (response.status === 401) throw new Error("Unauthorized");
-        throw new Error("Failed to fetch parents");
-      }
-      const data = await response.json();
-      console.log("Fetched Parents:", data);
+      const data = await fetchWithAuth("users/by-role?role=parent");
       setParents(data);
     } catch (error) {
       console.error("Error fetching parents:", error);
       setMessage(error.message);
-      if (error.message === "Unauthorized") navigate("/login");
     }
   };
 
   const fetchSubjects = async () => {
     try {
-      const token = getToken();
-      const response = await fetch("https://ed-tech-solution-project-back-end.onrender.com/api/subjects", {
-        headers: { "Authorization": `Bearer ${token}` },
-      });
-      if (!response.ok) {
-        if (response.status === 401) throw new Error("Unauthorized");
-        throw new Error("Failed to fetch subjects");
-      }
-      const data = await response.json();
+      const data = await fetchWithAuth("subjects");
       setSubjects(data);
     } catch (error) {
       console.error("Error fetching subjects:", error);
       setMessage(error.message);
-      if (error.message === "Unauthorized") navigate("/login");
     }
   };
 
   const fetchStudentSubjects = async (studentId) => {
     try {
-      const token = getToken();
-      const response = await fetch(`https://ed-tech-solution-project-back-end.onrender.com/api/students/${studentId}/subjects`, {
-        headers: { "Authorization": `Bearer ${token}` },
-      });
-      if (!response.ok) {
-        if (response.status === 401) throw new Error("Unauthorized");
-        throw new Error("Failed to fetch subjects for student");
-      }
-      const data = await response.json();
+      const data = await fetchWithAuth(`students/${studentId}/subjects`);
       return data.map(subject => subject.name) || [];
     } catch (error) {
       console.error("Error fetching student subjects:", error);
-      if (error.message === "Unauthorized") navigate("/login");
       return [];
     }
   };
 
   const fetchWelfareReports = async (studentId) => {
     try {
-      const token = getToken();
-      const response = await fetch(`https://ed-tech-solution-project-back-end.onrender.com/api/students/${studentId}/welfare_reports`, {
-        headers: { "Authorization": `Bearer ${token}` },
-      });
-      if (!response.ok) {
-        if (response.status === 401) throw new Error("Unauthorized");
-        throw new Error("Failed to fetch welfare reports");
-      }
-      const data = await response.json();
+      const data = await fetchWithAuth(`students/${studentId}/welfare_reports`);
       setWelfareReports(data);
     } catch (error) {
       console.error("Error fetching welfare reports:", error);
       setMessage(error.message);
-      if (error.message === "Unauthorized") navigate("/login");
     }
   };
 
   const fetchResults = async (studentId, retries = 3) => {
     setIsLoading(true);
     try {
-      const token = getToken();
-      const response = await fetch(`https://ed-tech-solution-project-back-end.onrender.com/${studentId}/results`, {
-        headers: { "Authorization": `Bearer ${token}` },
-      });
-      if (!response.ok) {
-        if (response.status === 401) throw new Error("Unauthorized");
-        if (response.status === 404) throw new Error("Student not found");
-        else if (response.status === 500) throw new Error("Internal server error");
-        throw new Error("Failed to fetch results");
-      }
-      const data = await response.json();
+      const data = await fetchWithAuth(`${studentId}/results`);
       const validResults = data.filter(result => 
         result.student_id && result.subject_id && result.exam_id && !isSoftDeletedResult(result)
       );
       setResults(validResults);
-      if (validResults.length === 0) {
-        setMessage("No results found for this student.");
-      } else {
-        setMessage("");
-      }
+      setMessage(validResults.length === 0 ? "No results found for this student." : "");
     } catch (error) {
-      if (error.message === "Unauthorized") {
-        navigate("/login");
-        return;
-      }
       if (retries > 0) {
         console.log(`Retrying... ${retries} attempts left`);
         await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -266,19 +182,14 @@ const StudentManagement = () => {
 
   const handleSaveEdit = async () => {
     try {
-      const token = getToken();
       const parent = parents.find((p) => p.email.toLowerCase() === editingStudent.parent_email.toLowerCase());
       if (!parent) {
         alert("Parent email not found. Please register the parent first.");
         return;
       }
 
-      const response = await fetch(`https://ed-tech-solution-project-back-end.onrender.com/api/students/${editingStudent.id}`, {
+      const updatedStudent = await fetchWithAuth(`students/${editingStudent.id}`, {
         method: "PUT",
-        headers: {
-          "Authorization": `Bearer ${token}`, // Add token
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify({
           name: editingStudent.name,
           admission_number: editingStudent.admission_number,
@@ -287,11 +198,7 @@ const StudentManagement = () => {
           subjects: editingStudent.selectedSubjects,
         }),
       });
-      if (!response.ok) {
-        if (response.status === 401) throw new Error("Unauthorized");
-        throw new Error(`Failed to update student: ${response.statusText}`);
-      }
-      const updatedStudent = await response.json();
+
       updatedStudent.class_name = updatedStudent.class_name || getClassNameById(updatedStudent.school_class_id);
       updatedStudent.subjects = editingStudent.selectedSubjects;
       updatedStudent.parent_email = parent.email;
@@ -301,7 +208,6 @@ const StudentManagement = () => {
     } catch (error) {
       console.error("Error updating student:", error);
       setMessage(error.message);
-      if (error.message === "Unauthorized") navigate("/login");
     }
   };
 
@@ -312,21 +218,12 @@ const StudentManagement = () => {
   const handleDelete = async (studentId) => {
     if (window.confirm("Are you sure you want to delete this student?")) {
       try {
-        const token = getToken();
-        const response = await fetch(`https://ed-tech-solution-project-back-end.onrender.com/api/students/${studentId}`, {
-          method: "DELETE",
-          headers: { "Authorization": `Bearer ${token}` },
-        });
-        if (!response.ok) {
-          if (response.status === 401) throw new Error("Unauthorized");
-          throw new Error(`Failed to delete student: ${response.statusText}`);
-        }
+        await fetchWithAuth(`students/${studentId}`, { method: "DELETE" });
         setStudents((prev) => prev.filter((student) => student.id !== studentId));
         setMessage("Student soft-deleted successfully.");
       } catch (error) {
         console.error("Error deleting student:", error);
         setMessage(error.message);
-        if (error.message === "Unauthorized") navigate("/login");
       }
     }
   };
@@ -376,7 +273,6 @@ const StudentManagement = () => {
     }
 
     try {
-      const token = getToken();
       const parent = parents.find((p) => p.email.toLowerCase() === addingStudent.parent_email.toLowerCase());
       if (!parent) {
         alert("Parent email not found. Please register the parent first.");
@@ -391,19 +287,11 @@ const StudentManagement = () => {
         subjects: addingStudent.selectedSubjects,
       };
 
-      const response = await fetch("https://ed-tech-solution-project-back-end.onrender.com/api/students", {
+      const newStudent = await fetchWithAuth("students", {
         method: "POST",
-        headers: {
-          "Authorization": `Bearer ${token}`, // Add token
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify(studentData),
       });
-      if (!response.ok) {
-        if (response.status === 401) throw new Error("Unauthorized");
-        throw new Error(`Failed to add student: ${response.statusText}`);
-      }
-      const newStudent = await response.json();
+
       newStudent.class_name = newStudent.class_name || getClassNameById(newStudent.school_class_id);
       newStudent.subjects = addingStudent.selectedSubjects;
       newStudent.parent_email = addingStudent.parent_email;
@@ -413,7 +301,6 @@ const StudentManagement = () => {
     } catch (error) {
       console.error("Error adding student:", error);
       setMessage(error.message);
-      if (error.message === "Unauthorized") navigate("/login");
     }
   };
 
@@ -431,10 +318,7 @@ const StudentManagement = () => {
     setSearchTerm(e.target.value);
   };
 
-  // Redirect if not authenticated on render
-  const token = getToken();
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
-  if (!token || user.role !== "admin") {
+  if (!localStorage.getItem("token") || JSON.parse(localStorage.getItem("user") || "{}").role !== "admin") {
     navigate("/login");
     return null;
   }
@@ -478,25 +362,22 @@ const StudentManagement = () => {
                   s.admission_number.toLowerCase().includes(searchTerm.toLowerCase()) ||
                   s.class_name.toLowerCase().includes(searchTerm.toLowerCase())
                 )
-                .map((student) => {
-                  console.log("Student Data:", student);
-                  return (
-                    <tr key={student.id} onClick={() => viewStudentDetails(student)}>
-                      <td>{student.name}</td>
-                      <td>{student.admission_number}</td>
-                      <td>{student.class_name}</td>
-                      <td>{(student.subjects || []).join(", ") || "None"}</td>
-                      <td>
-                        <button className="edit-button" onClick={(e) => { e.stopPropagation(); handleEdit(student); }}>
-                          <FaEdit />
-                        </button>
-                        <button className="delete-button" onClick={(e) => { e.stopPropagation(); handleDelete(student.id); }}>
-                          <FaTrash />
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })
+                .map((student) => (
+                  <tr key={student.id} onClick={() => viewStudentDetails(student)}>
+                    <td>{student.name}</td>
+                    <td>{student.admission_number}</td>
+                    <td>{student.class_name}</td>
+                    <td>{(student.subjects || []).join(", ") || "None"}</td>
+                    <td>
+                      <button className="edit-button" onClick={(e) => { e.stopPropagation(); handleEdit(student); }}>
+                        <FaEdit />
+                      </button>
+                      <button className="delete-button" onClick={(e) => { e.stopPropagation(); handleDelete(student.id); }}>
+                        <FaTrash />
+                      </button>
+                    </td>
+                  </tr>
+                ))
             ) : (
               isLoading ? (
                 <tr>

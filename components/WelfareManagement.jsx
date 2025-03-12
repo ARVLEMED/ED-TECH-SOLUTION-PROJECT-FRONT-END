@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // Added for navigation
+import { useNavigate } from 'react-router-dom';
 import './WelfareManagement.css';
-import { getToken } from './Auth';
+import { fetchWithAuth } from '../src/utils/api'; // Import fetchWithAuth
 
 function WelfareManagement() {
     const navigate = useNavigate();
@@ -15,11 +15,9 @@ function WelfareManagement() {
     const [error, setError] = useState('');
     const [students, setStudents] = useState([]);
 
-    // Fetch all students from the backend with auth check
     useEffect(() => {
-        const token = getToken();
         const user = JSON.parse(localStorage.getItem("user") || "{}");
-        if (!token || user.role !== "admin") {
+        if (!localStorage.getItem("token") || user.role !== "admin") {
             setError("Unauthorized access. Please log in as an admin.");
             navigate("/login");
             return;
@@ -29,21 +27,10 @@ function WelfareManagement() {
             setLoading(true);
             setError('');
             try {
-                const response = await fetch("https://ed-tech-solution-project-back-end.onrender.com/api/students", {
-                    headers: {
-                        "Authorization": `Bearer ${token}`, // Add token
-                        "Content-Type": "application/json",
-                    },
-                });
-                if (!response.ok) {
-                    if (response.status === 401) throw new Error("Unauthorized");
-                    throw new Error("Failed to fetch students");
-                }
-                const data = await response.json();
+                const data = await fetchWithAuth("students");
                 setStudents(data || []);
             } catch (err) {
                 setError(err.message);
-                if (err.message === "Unauthorized") navigate("/login");
             } finally {
                 setLoading(false);
             }
@@ -52,14 +39,12 @@ function WelfareManagement() {
         fetchStudents();
     }, [navigate]);
 
-    // Fetch welfare reports when a student is selected or category changes
     useEffect(() => {
         if (selectedStudent) {
             fetchWelfareReports(selectedStudent.id, activeCategory);
         }
     }, [selectedStudent, activeCategory]);
 
-    // Handle student search
     const handleSearchStudent = () => {
         if (!studentQuery.trim()) {
             setError("Please enter a student name.");
@@ -82,36 +67,20 @@ function WelfareManagement() {
         setSelectedStudent(foundStudent);
     };
 
-    // Fetch welfare reports for the selected student and category
     const fetchWelfareReports = async (studentId, category) => {
         setLoading(true);
         setError('');
         try {
-            const token = getToken();
-            const url = `https://ed-tech-solution-project-back-end.onrender.com/api/students/${studentId}/welfare_reports?category=${encodeURIComponent(category)}`;
-            const response = await fetch(url, {
-                headers: {
-                    "Authorization": `Bearer ${token}`, // Add token
-                    "Content-Type": "application/json",
-                },
-            });
-            if (!response.ok) {
-                if (response.status === 401) throw new Error("Unauthorized");
-                throw new Error("Failed to fetch welfare reports");
-            }
-            const data = await response.json();
-            console.log("Welfare reports fetched:", data);
+            const data = await fetchWithAuth(`students/${studentId}/welfare_reports?category=${encodeURIComponent(category)}`);
             setWelfareReports(data || []);
         } catch (err) {
             console.error("Error fetching welfare reports:", err);
             setError(err.message);
-            if (err.message === "Unauthorized") navigate("/login");
         } finally {
             setLoading(false);
         }
     };
 
-    // Handle adding a new welfare report
     const handleAddRemark = async () => {
         if (!newRemark.trim() || !selectedStudent) {
             setError("Please enter a remark and select a student.");
@@ -121,13 +90,8 @@ function WelfareManagement() {
         setLoading(true);
         setError('');
         try {
-            const token = getToken();
-            const response = await fetch("https://ed-tech-solution-project-back-end.onrender.com/api/welfare_reports", {
+            await fetchWithAuth("welfare_reports", {
                 method: "POST",
-                headers: {
-                    "Authorization": `Bearer ${token}`, // Add token
-                    "Content-Type": "application/json",
-                },
                 body: JSON.stringify({
                     student_id: selectedStudent.id,
                     remarks: newRemark,
@@ -136,25 +100,16 @@ function WelfareManagement() {
                 }),
             });
 
-            if (!response.ok) {
-                if (response.status === 401) throw new Error("Unauthorized");
-                throw new Error("Failed to add welfare report");
-            }
-
             fetchWelfareReports(selectedStudent.id, activeCategory);
             setNewRemark('');
         } catch (err) {
             setError(err.message);
-            if (err.message === "Unauthorized") navigate("/login");
         } finally {
             setLoading(false);
         }
     };
 
-    // Redirect if not authenticated on render
-    const token = getToken();
-    const user = JSON.parse(localStorage.getItem("user") || "{}");
-    if (!token || user.role !== "admin") {
+    if (!localStorage.getItem("token") || JSON.parse(localStorage.getItem("user") || "{}").role !== "admin") {
         navigate("/login");
         return null;
     }
@@ -169,7 +124,7 @@ function WelfareManagement() {
             <div className="search-container">
                 <input
                     type="text"
-                    name='search-container'
+                    name="search-container"
                     placeholder="Search student by name..."
                     value={studentQuery}
                     onChange={(e) => setStudentQuery(e.target.value)}
@@ -225,7 +180,7 @@ function WelfareManagement() {
                         </select>
                         <input
                             type="text"
-                            name='enter-remark'
+                            name="enter-remark"
                             placeholder="Enter remark..."
                             value={newRemark}
                             onChange={(e) => setNewRemark(e.target.value)}

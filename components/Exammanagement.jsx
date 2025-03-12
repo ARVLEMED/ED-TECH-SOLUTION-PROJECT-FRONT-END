@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // Added for navigation
+import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faTrash, faMagnifyingGlass, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import '../src/Styles/ExamManagement.css';
-import { getToken } from './Auth';
+import { fetchWithAuth } from '../src/utils/api'; // Import fetchWithAuth
 
 function ExamManagement() {
     const [exams, setExams] = useState([]);
@@ -13,13 +13,11 @@ function ExamManagement() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [forms, setForms] = useState([]);
-    const navigate = useNavigate(); // For redirecting on auth failure
+    const navigate = useNavigate();
 
-    // Fetch exams and forms on mount with auth check
     useEffect(() => {
-        const token = getToken();
         const user = JSON.parse(localStorage.getItem("user") || "{}");
-        if (!token || user.role !== "admin") {
+        if (!localStorage.getItem("token") || user.role !== "admin") {
             setError("Unauthorized access. Please log in as an admin.");
             navigate("/login");
             return;
@@ -33,22 +31,10 @@ function ExamManagement() {
         setLoading(true);
         setError("");
         try {
-            const token = getToken();
-            const response = await fetch("https://ed-tech-solution-project-back-end.onrender.com/api/exams", {
-                headers: {
-                    "Authorization": `Bearer ${token}`, // Add token to headers
-                    "Content-Type": "application/json",
-                },
-            });
-            if (!response.ok) {
-                if (response.status === 401) throw new Error("Unauthorized");
-                throw new Error("Failed to fetch exams");
-            }
-            const data = await response.json();
+            const data = await fetchWithAuth("exams");
             setExams(data || []);
         } catch (err) {
             setError(err.message);
-            if (err.message === "Unauthorized") navigate("/login");
         } finally {
             setLoading(false);
         }
@@ -56,19 +42,10 @@ function ExamManagement() {
 
     const fetchForms = async () => {
         try {
-            const token = getToken();
-            const response = await fetch("https://ed-tech-solution-project-back-end.onrender.com/api/forms", {
-                headers: { "Authorization": `Bearer ${token}` },
-            });
-            if (!response.ok) {
-                if (response.status === 401) throw new Error("Unauthorized");
-                throw new Error("Failed to fetch forms");
-            }
-            const data = await response.json();
+            const data = await fetchWithAuth("forms");
             setForms(data || []);
         } catch (err) {
             setError(err.message);
-            if (err.message === "Unauthorized") navigate("/login");
         }
     };
 
@@ -85,10 +62,7 @@ function ExamManagement() {
         setLoading(true);
         setError("");
         try {
-            const token = getToken();
-            const url = editingExam
-                ? `https://ed-tech-solution-project-back-end.onrender.com/api/exams/${editingExam.id}`
-                : "https://ed-tech-solution-project-back-end.onrender.com/api/exams";
+            const url = editingExam ? `exams/${editingExam.id}` : "exams";
             const method = editingExam ? "PUT" : "POST";
 
             const payload = {
@@ -98,26 +72,15 @@ function ExamManagement() {
                 date: new Date(newExam.date).toISOString(),
             };
 
-            const response = await fetch(url, {
+            await fetchWithAuth(url, {
                 method,
-                headers: {
-                    "Authorization": `Bearer ${token}`, // Add token
-                    "Content-Type": "application/json",
-                },
                 body: JSON.stringify(payload),
             });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                if (response.status === 401) throw new Error("Unauthorized");
-                throw new Error(errorData.message || "Failed to save exam");
-            }
 
             fetchExams();
             cancelForm();
         } catch (err) {
             setError(err.message);
-            if (err.message === "Unauthorized") navigate("/login");
         } finally {
             setLoading(false);
         }
@@ -139,19 +102,10 @@ function ExamManagement() {
         setLoading(true);
         setError("");
         try {
-            const token = getToken();
-            const response = await fetch(`https://ed-tech-solution-project-back-end.onrender.com/api/exams/${id}`, {
-                method: "DELETE",
-                headers: { "Authorization": `Bearer ${token}` },
-            });
-            if (!response.ok) {
-                if (response.status === 401) throw new Error("Unauthorized");
-                throw new Error("Failed to delete exam");
-            }
+            await fetchWithAuth(`exams/${id}`, { method: "DELETE" });
             fetchExams();
         } catch (err) {
             setError(err.message);
-            if (err.message === "Unauthorized") navigate("/login");
         } finally {
             setLoading(false);
         }
@@ -163,10 +117,7 @@ function ExamManagement() {
         setNewExam({ name: "", form_name: "", term: "", date: "" });
     };
 
-    // Redirect if not authenticated on render
-    const token = getToken();
-    const user = JSON.parse(localStorage.getItem("user") || "{}");
-    if (!token || user.role !== "admin") {
+    if (!localStorage.getItem("token") || JSON.parse(localStorage.getItem("user") || "{}").role !== "admin") {
         navigate("/login");
         return null;
     }

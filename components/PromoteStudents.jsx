@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./PromoteStudents.css";
-import { getToken } from "./Auth";
+import { fetchWithAuth } from "../src/utils/api"; // Import fetchWithAuth
 
 const PromoteStudents = () => {
   const navigate = useNavigate();
@@ -12,11 +12,9 @@ const PromoteStudents = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch all students and forms with auth check
   useEffect(() => {
-    const token = getToken();
     const user = JSON.parse(localStorage.getItem("user") || "{}");
-    if (!token || user.role !== "admin") {
+    if (!localStorage.getItem("token") || user.role !== "admin") {
       setError("Unauthorized access. Please log in as an admin.");
       navigate("/login");
       return;
@@ -26,34 +24,14 @@ const PromoteStudents = () => {
       setLoading(true);
       setError(null);
       try {
-        // Fetch students
-        const studentsResponse = await fetch("https://ed-tech-solution-project-back-end.onrender.com/api/students", {
-          headers: {
-            "Authorization": `Bearer ${token}`, // Add token to headers
-            "Content-Type": "application/json",
-          },
-        });
-        if (!studentsResponse.ok) {
-          if (studentsResponse.status === 401) throw new Error("Unauthorized");
-          throw new Error("Failed to fetch students");
-        }
-        const studentsData = await studentsResponse.json();
+        const studentsData = await fetchWithAuth("students");
         setStudents(studentsData);
 
-        // Fetch forms
-        const formsResponse = await fetch("https://ed-tech-solution-project-back-end.onrender.com/api/forms", {
-          headers: { "Authorization": `Bearer ${token}` },
-        });
-        if (!formsResponse.ok) {
-          if (formsResponse.status === 401) throw new Error("Unauthorized");
-          throw new Error("Failed to fetch forms");
-        }
-        const formsData = await formsResponse.json();
+        const formsData = await fetchWithAuth("forms");
         setForms(formsData);
         setTargetForm(formsData[1]?.name || ""); // Default to Form 2
       } catch (err) {
         setError(err.message);
-        if (err.message === "Unauthorized") navigate("/login");
       } finally {
         setLoading(false);
       }
@@ -61,7 +39,6 @@ const PromoteStudents = () => {
     fetchData();
   }, [navigate]);
 
-  // Handle student selection
   const handleStudentSelect = (studentId) => {
     setSelectedStudents((prev) =>
       prev.includes(studentId)
@@ -70,7 +47,6 @@ const PromoteStudents = () => {
     );
   };
 
-  // Handle promotion
   const handlePromote = async () => {
     if (selectedStudents.length === 0) {
       setError("Please select at least one student.");
@@ -85,48 +61,27 @@ const PromoteStudents = () => {
     setError(null);
 
     try {
-      const token = getToken();
-      const response = await fetch("https://ed-tech-solution-project-back-end.onrender.com/api/students/promote", {
+      await fetchWithAuth("students/promote", {
         method: "POST",
-        headers: {
-          "Authorization": `Bearer ${token}`, // Add token
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify({
           student_ids: selectedStudents,
           target_form: targetForm,
         }),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        if (response.status === 401) throw new Error("Unauthorized");
-        throw new Error(errorData.message || "Failed to promote students");
-      }
-
-      const data = await response.json();
-      console.log("Promotion successful:", data);
       alert(`Students promoted to ${targetForm} successfully!`);
       setSelectedStudents([]); // Clear selection
 
-      // Refresh students list
-      const studentsResponse = await fetch("https://ed-tech-solution-project-back-end.onrender.com/api/students", {
-        headers: { "Authorization": `Bearer ${token}` },
-      });
-      if (!studentsResponse.ok) throw new Error("Failed to refresh students list");
-      setStudents(await studentsResponse.json());
+      const refreshedStudents = await fetchWithAuth("students");
+      setStudents(refreshedStudents);
     } catch (err) {
       setError(err.message);
-      if (err.message === "Unauthorized") navigate("/login");
     } finally {
       setLoading(false);
     }
   };
 
-  // Redirect if not authenticated on render
-  const token = getToken();
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
-  if (!token || user.role !== "admin") {
+  if (!localStorage.getItem("token") || JSON.parse(localStorage.getItem("user") || "{}").role !== "admin") {
     navigate("/login");
     return null;
   }

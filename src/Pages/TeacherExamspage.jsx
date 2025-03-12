@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import "../Styles/TeacherExamsPage.css";
-import { getToken } from "../../components/Auth";
+import { fetchWithAuth } from "../src/utils/api"; // Import fetchWithAuth
 
 function TeacherExamspage() {
   const navigate = useNavigate();
@@ -21,46 +20,34 @@ function TeacherExamspage() {
 
   const fetchData = async () => {
     try {
-      const token = getToken();
       const user = JSON.parse(localStorage.getItem("user") || "{}");
-
-      if (!token || user.role !== "teacher") {
+      if (!user.id || user.role !== "teacher") {
         throw new Error("Unauthorized: Must be logged in as a teacher");
       }
 
-      const config = {
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      };
+      const [resultsData, studentsData, subjectsData, examsData] = await Promise.all([
+        fetchWithAuth("results"),
+        fetchWithAuth("students"),
+        fetchWithAuth("subjects"),
+        fetchWithAuth("exams"),
+      ]);
 
-      const resultsResponse = await axios.get("https://ed-tech-solution-project-back-end.onrender.com/api/results", config);
-      setExamRecords(resultsResponse.data);
-
-      const studentsResponse = await axios.get("https://ed-tech-solution-project-back-end.onrender.com/api/students", config);
-      setStudents(studentsResponse.data);
-
-      const subjectsResponse = await axios.get("https://ed-tech-solution-project-back-end.onrender.com/api/subjects", config);
-      setSubjects(subjectsResponse.data);
-
-      const examsResponse = await axios.get("https://ed-tech-solution-project-back-end.onrender.com/api/exams", config);
-      setExams(examsResponse.data);
-
+      setExamRecords(resultsData);
+      setStudents(studentsData);
+      setSubjects(subjectsData);
+      setExams(examsData);
       setError(null);
     } catch (err) {
       console.error("Failed to fetch data:", err);
       setError(err.message || "Failed to load data");
-      if (err.message === "Unauthorized") navigate("/login");
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    const token = getToken();
     const user = JSON.parse(localStorage.getItem("user") || "{}");
-    if (!token || user.role !== "teacher") {
+    if (!localStorage.getItem("token") || user.role !== "teacher") {
       setError("Unauthorized access. Please log in as a teacher.");
       navigate("/login");
       return;
@@ -101,23 +88,14 @@ function TeacherExamspage() {
       return;
     }
 
-    const token = getToken();
     const user = JSON.parse(localStorage.getItem("user") || "{}");
-    console.log("DEBUG: User:", user);
-    console.log("DEBUG: Token:", token);
-
     try {
-      const teacherResponse = await axios.get("https://ed-tech-solution-project-back-end.onrender.com/api/me/teacher", {
-        headers: { "Authorization": `Bearer ${token}` },
-      });
-      console.log("DEBUG: Teacher Response:", teacherResponse.data);
-      const teacher = teacherResponse.data;
+      const teacher = await fetchWithAuth("me/teacher");
       if (!teacher || !teacher.id) {
         console.error("No teacher profile found for user ID:", user.id);
         alert("Teacher profile not found for this user.");
         return;
       }
-      console.log("DEBUG: Selected Teacher:", teacher);
 
       const newRecord = {
         student_id: selectedStudent.id,
@@ -127,31 +105,21 @@ function TeacherExamspage() {
         teacher_id: teacher.id,
       };
 
-      console.log("Sending data to backend:", newRecord);
-
-      const config = {
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      };
-
       let response;
       if (editingRecord) {
-        response = await axios.put(
-          `https://ed-tech-solution-project-back-end.onrender.com/api/results/${editingRecord.id}`,
-          newRecord,
-          config
-        );
-        console.log("Update response:", response.data);
+        response = await fetchWithAuth(`results/${editingRecord.id}`, {
+          method: "PUT",
+          body: JSON.stringify(newRecord),
+        });
         setExamRecords(examRecords.map((record) =>
-          record.id === editingRecord.id ? response.data : record
+          record.id === editingRecord.id ? response : record
         ));
       } else {
-        console.log("DEBUG: Sending POST to /api/results");
-        response = await axios.post("https://ed-tech-solution-project-back-end.onrender.com/api/results", newRecord, config);
-        console.log("Create response:", response.data);
-        setExamRecords([...examRecords, response.data]);
+        response = await fetchWithAuth("results", {
+          method: "POST",
+          body: JSON.stringify(newRecord),
+        });
+        setExamRecords([...examRecords, response]);
       }
 
       setExamName("");
@@ -161,12 +129,8 @@ function TeacherExamspage() {
       setEditingRecord(null);
       setIsModalOpen(false);
     } catch (err) {
-      console.error("Failed to save exam result:", err.response ? err.response.data : err.message);
-      if (err.response?.status === 401) {
-        navigate("/login");
-      } else {
-        alert("Failed to save exam result: " + (err.response?.data?.message || err.message || "Unknown error"));
-      }
+      console.error("Failed to save exam result:", err);
+      alert("Failed to save exam result: " + (err.message || "Unknown error"));
     }
   };
 
@@ -185,25 +149,15 @@ function TeacherExamspage() {
 
   const handleDelete = async (id) => {
     try {
-      const token = getToken();
-      const config = {
-        headers: { "Authorization": `Bearer ${token}` },
-      };
-      await axios.delete(`https://ed-tech-solution-project-back-end.onrender.com/api/results/${id}`, config);
+      await fetchWithAuth(`results/${id}`, { method: "DELETE" });
       setExamRecords(examRecords.filter((record) => record.id !== id));
     } catch (err) {
       console.error("Failed to delete exam result:", err);
-      if (err.response?.status === 401) {
-        navigate("/login");
-      } else {
-        alert("Failed to delete exam result");
-      }
+      alert("Failed to delete exam result: " + (err.message || "Unknown error"));
     }
   };
 
-  const token = getToken();
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
-  if (!token || user.role !== "teacher") {
+  if (!localStorage.getItem("token") || JSON.parse(localStorage.getItem("user") || "{}").role !== "teacher") {
     navigate("/login");
     return null;
   }

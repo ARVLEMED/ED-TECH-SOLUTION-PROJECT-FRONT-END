@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react"; // Added useEffect
 import { Link, useNavigate } from "react-router-dom";
 import LandingNavbar from "../components/LandingNavbar";
 import "../Styles/Authentication.css";
@@ -13,6 +13,15 @@ const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+
+  // Check if already logged in
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    if (token && user.role) {
+      navigate("/"); // Redirect to home or role-specific page if already logged in
+    }
+  }, [navigate]);
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -42,25 +51,15 @@ const Register = () => {
         }),
       });
 
-      if (response.ok) {
-        const data = await response.json();
-        console.log("Registration successful:", data);
-
-        // Store user data in localStorage if provided (optional, depends on backend)
-        if (data.user) {
-          localStorage.setItem("user", JSON.stringify(data.user));
-        }
-        // Note: We don’t store a token here since registration typically doesn’t provide one
-
-        // Redirect to login page after successful registration
-        navigate("/login");
-      } else {
+      if (!response.ok) {
         const errorData = await response.json().catch(() => ({ message: "Registration failed." }));
-        setError(errorData.message || "Registration failed. Please try again.");
+        throw new Error(errorData.message || "Registration failed. Please try again.");
       }
+
+      await response.json(); // Process response but don’t store token (not typically returned)
+      navigate("/login"); // Redirect to login after successful registration
     } catch (error) {
-      console.error("Registration error:", error);
-      setError("An error occurred. Please try again later.");
+      setError(error.message);
     } finally {
       setIsLoading(false);
     }

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { useNavigate } from "react-router-dom"; // Added for navigation
+import { useNavigate } from "react-router-dom";
 import { FaSearch, FaPlus, FaEdit, FaTrash, FaSave, FaTimes } from "react-icons/fa";
 import "./TeacherManagement.css";
-import { getToken } from "./Auth";
+import { fetchWithAuth } from "../src/utils/api"; // Import fetchWithAuth
 
 // Error Boundary Component
 class ErrorBoundary extends React.Component {
@@ -38,11 +38,9 @@ const TeacherManagement = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  // Fetch data on mount with auth check
   useEffect(() => {
-    const token = getToken();
     const user = JSON.parse(localStorage.getItem("user") || "{}");
-    if (!token || user.role !== "admin") {
+    if (!localStorage.getItem("token") || user.role !== "admin") {
       setMessage("Unauthorized access. Please log in as an admin.");
       navigate("/login");
       return;
@@ -56,18 +54,7 @@ const TeacherManagement = () => {
   const fetchTeachers = useCallback(async () => {
     setIsLoading(true);
     try {
-      const token = getToken();
-      const response = await fetch("https://ed-tech-solution-project-back-end.onrender.com/api/teachers", {
-        headers: {
-          "Authorization": `Bearer ${token}`, // Add token
-          "Content-Type": "application/json",
-        },
-      });
-      if (!response.ok) {
-        if (response.status === 401) throw new Error("Unauthorized");
-        throw new Error(`Failed to fetch teachers: ${response.status} - ${response.statusText}`);
-      }
-      const data = await response.json();
+      const data = await fetchWithAuth("teachers");
       const transformedTeachers = data.map((teacher) => ({
         id: teacher.id,
         username: teacher.username || "Unknown",
@@ -80,7 +67,6 @@ const TeacherManagement = () => {
       setTeachers(transformedTeachers);
     } catch (error) {
       setMessage(error.message);
-      if (error.message === "Unauthorized") navigate("/login");
     } finally {
       setIsLoading(false);
     }
@@ -88,37 +74,19 @@ const TeacherManagement = () => {
 
   const fetchClasses = useCallback(async () => {
     try {
-      const token = getToken();
-      const response = await fetch("https://ed-tech-solution-project-back-end.onrender.com/api/classes", {
-        headers: { "Authorization": `Bearer ${token}` },
-      });
-      if (!response.ok) {
-        if (response.status === 401) throw new Error("Unauthorized");
-        throw new Error(`Failed to fetch classes: ${response.status} - ${response.statusText}`);
-      }
-      const data = await response.json();
+      const data = await fetchWithAuth("classes");
       setClasses(data);
     } catch (error) {
       setMessage(error.message);
-      if (error.message === "Unauthorized") navigate("/login");
     }
   }, []);
 
   const fetchSubjects = useCallback(async () => {
     try {
-      const token = getToken();
-      const response = await fetch("https://ed-tech-solution-project-back-end.onrender.com/api/subjects", {
-        headers: { "Authorization": `Bearer ${token}` },
-      });
-      if (!response.ok) {
-        if (response.status === 401) throw new Error("Unauthorized");
-        throw new Error(`Failed to fetch subjects: ${response.status} - ${response.statusText}`);
-      }
-      const data = await response.json();
+      const data = await fetchWithAuth("subjects");
       setSubjects(data);
     } catch (error) {
       setMessage(error.message);
-      if (error.message === "Unauthorized") navigate("/login");
     }
   }, []);
 
@@ -170,24 +138,14 @@ const TeacherManagement = () => {
 
   const handleSaveEdit = async () => {
     try {
-      const token = getToken();
-      const response = await fetch(`https://ed-tech-solution-project-back-end.onrender.com/api/teachers/${editingTeacher.id}`, {
+      const updatedTeacher = await fetchWithAuth(`teachers/${editingTeacher.id}`, {
         method: "PUT",
-        headers: {
-          "Authorization": `Bearer ${token}`, // Add token
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify({
           username: editingTeacher.username,
           email: editingTeacher.email,
           subjects: editingTeacher.selectedSubjects.join(", "),
         }),
       });
-      if (!response.ok) {
-        if (response.status === 401) throw new Error("Unauthorized");
-        throw new Error(`Failed to update teacher: ${response.status} - ${response.statusText}`);
-      }
-      const updatedTeacher = await response.json();
       const transformedTeacher = {
         id: updatedTeacher.id,
         username: updatedTeacher.username,
@@ -201,7 +159,6 @@ const TeacherManagement = () => {
       setEditingTeacher(null);
     } catch (error) {
       setMessage(error.message);
-      if (error.message === "Unauthorized") navigate("/login");
     }
   };
 
@@ -212,19 +169,10 @@ const TeacherManagement = () => {
   const handleDelete = async (teacherId) => {
     if (window.confirm("Are you sure you want to delete this teacher?")) {
       try {
-        const token = getToken();
-        const response = await fetch(`https://ed-tech-solution-project-back-end.onrender.com/api/teachers/${teacherId}`, {
-          method: "DELETE",
-          headers: { "Authorization": `Bearer ${token}` },
-        });
-        if (!response.ok) {
-          if (response.status === 401) throw new Error("Unauthorized");
-          throw new Error(`Failed to delete teacher: ${response.status} - ${response.statusText}`);
-        }
+        await fetchWithAuth(`teachers/${teacherId}`, { method: "DELETE" });
         setTeachers((prev) => prev.filter((t) => t.id !== teacherId));
       } catch (error) {
         setMessage(error.message);
-        if (error.message === "Unauthorized") navigate("/login");
       }
     }
   };
@@ -272,13 +220,8 @@ const TeacherManagement = () => {
       return;
     }
     try {
-      const token = getToken();
-      const response = await fetch("https://ed-tech-solution-project-back-end.onrender.com/api/teachers", {
+      const newTeacher = await fetchWithAuth("teachers", {
         method: "POST",
-        headers: {
-          "Authorization": `Bearer ${token}`, // Add token
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify({
           username: addingTeacher.username,
           email: addingTeacher.email,
@@ -286,11 +229,6 @@ const TeacherManagement = () => {
           subjects: addingTeacher.selectedSubjects.join(", "),
         }),
       });
-      if (!response.ok) {
-        if (response.status === 401) throw new Error("Unauthorized");
-        throw new Error(`Failed to add teacher: ${response.status} - ${response.statusText}`);
-      }
-      const newTeacher = await response.json();
       const transformedTeacher = {
         id: newTeacher.id,
         username: newTeacher.username,
@@ -304,7 +242,6 @@ const TeacherManagement = () => {
       setAddingTeacher(false);
     } catch (error) {
       setMessage(error.message);
-      if (error.message === "Unauthorized") navigate("/login");
     }
   };
 
@@ -317,10 +254,7 @@ const TeacherManagement = () => {
     return managedClass ? managedClass.name : null;
   };
 
-  // Redirect if not authenticated on render
-  const token = getToken();
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
-  if (!token || user.role !== "admin") {
+  if (!localStorage.getItem("token") || JSON.parse(localStorage.getItem("user") || "{}").role !== "admin") {
     navigate("/login");
     return null;
   }

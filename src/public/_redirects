@@ -1,0 +1,2 @@
+# dist/_redirects (or public/_redirects if copied during build)
+/*    /index.html   200
